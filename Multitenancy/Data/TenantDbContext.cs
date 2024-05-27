@@ -1,6 +1,5 @@
 global using System.Data;
 global using Microsoft.EntityFrameworkCore;
-global using Server.Middleware;
 using System.Net.Mail;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using MySqlConnector;

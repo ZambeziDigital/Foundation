@@ -1,3 +1,5 @@
+global using Microsoft.AspNetCore.Identity;
+
 namespace ZambeziDigital.Multitenancy.Middleware;
 public interface ICurrentTenantService<TUser> where TUser : IdentityUser, IHasKey<string>,IMustHaveTenant, new() 
 {

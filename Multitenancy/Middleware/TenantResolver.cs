@@ -1,9 +1,8 @@
-global using Microsoft.AspNetCore.Http;
-global using Microsoft.AspNetCore.Identity;
-global using ZambeziDigital.Multitenancy.Extensions;
-using ZambeziDigital.Multitenancy.Middleware;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using ZambeziDigital.Multitenancy.Extensions;
 
-namespace Server.Middleware;
+namespace ZambeziDigital.Multitenancy.Middleware;
 
 public class TenantResolver<TUser>(RequestDelegate next, IServiceScopeFactory serviceScopeFactory)where TUser : IdentityUser, IHasKey<string>, IMustHaveTenant, new()
 {
