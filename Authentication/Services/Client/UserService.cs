@@ -26,7 +26,7 @@ public class UserService(IHttpClientFactory httpClientFactory, NavigationManager
         return user;
     }
 
-    public Task Delete(string id)
+    public Task<BasicResult> Delete(string id)
     {
         var request = _httpClient.DeleteAsync($"api/User/{id}");
         if (!request.Result.IsSuccessStatusCode)

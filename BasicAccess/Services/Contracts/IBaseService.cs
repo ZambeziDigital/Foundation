@@ -11,7 +11,7 @@ public interface IBaseService<T, TKey> where T : class, IHasKey<TKey>, new() whe
     Task<List<T>> Get(bool forceRefresh = false);
     Task<T> Get(TKey id);
     Task<T> Update(T t);
-    Task Delete(TKey id);
+    Task<BasicResult> Delete(TKey id);
 }
 
 

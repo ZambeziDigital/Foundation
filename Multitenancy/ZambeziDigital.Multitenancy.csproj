@@ -24,5 +24,6 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Models\Isolated\" />
+      <Folder Include="Services\Server\" />
     </ItemGroup>
 </Project>
