@@ -10,7 +10,7 @@ public static class MultipleDatabaseExtensions
         this IServiceCollection services, IConfiguration configuration)
         where TUser : IdentityUser, IHasKey<string>, IMustHaveTenant, new()
         where TTenant : class, ITenant, new()
-        where TBaseContext : IdentityDbContext, IBaseDbContext<TUser, TTenant>
+        where TBaseContext : IdentityDbContext<TUser>, IBaseDbContext<TUser, TTenant>
         where TTenantContext : DbContext, ITenantDbContext
     {
         try
