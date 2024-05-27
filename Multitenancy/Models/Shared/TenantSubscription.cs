@@ -1,6 +1,6 @@
 ﻿namespace ZambeziDigital.Multitenancy.Models.Shared
 {
-    public class TenantSubscription : BaseModel
+    public interface ITenantSubscription : IBaseModel<int>
     {
         public int SubscriptionId { get; set; }
         public int TenantId { get; set; }
@@ -8,7 +8,7 @@
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         //Navigation properties
-        public Subscription? Subscription { get; set; }
-        public Tenant? Tenant { get; set; }
+        public ISubscription? Subscription { get; set; }
+        public ITenant? Tenant { get; set; }
     }
 }

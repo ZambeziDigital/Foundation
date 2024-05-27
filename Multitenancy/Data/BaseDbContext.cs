@@ -1,14 +1,18 @@
 using System.Net.Mail;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using ZambeziDigital.Multitenancy.Models.Base;
 
 namespace ZambeziDigital.Multitenancy.Data;
 
-public partial class BaseDbContext(DbContextOptions<BaseDbContext> options) :  IdentityDbContext<ApplicationUser>(options)
+public interface IBaseDbContext<TUser, TTenant> 
+    where TUser : IdentityUser, IHasKey<string>,IMustHaveTenant, new()
+    where TTenant : class, ITenant
 {
-    public DbSet<Tenant> Tenants { get; set; }
-    public DbSet<TenantSubscription> CompanySubscriptions { get; set; }
-    public DbSet<Subscription> Subscriptions { get; set; }
-    // public DbSet<Address> Addresses { get; set; }
-    public DbSet<Attachment> Attachments { get; set; }
-    public DbSet<ApplicationUser> AspNetUsers { get; set; }
+    DbSet<TTenant> Tenants { get; set; }
+    DbSet<TUser> AspNetUsers { get; set; }
+
+    int SaveChanges();
+    void OnConfiguring(DbContextOptionsBuilder optionsBuilder);
+    DatabaseFacade Database { get; } // Add this line
 }

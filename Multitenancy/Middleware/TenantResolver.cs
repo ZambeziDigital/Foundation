@@ -5,12 +5,12 @@ using ZambeziDigital.Multitenancy.Middleware;
 
 namespace Server.Middleware;
 
-public class TenantResolver(RequestDelegate next, IServiceScopeFactory serviceScopeFactory)
+public class TenantResolver<TUser>(RequestDelegate next, IServiceScopeFactory serviceScopeFactory)where TUser : IdentityUser, IHasKey<string>, IMustHaveTenant, new()
 {
      private readonly RequestDelegate _next = next;
     
     // Get Company Id from incoming requests 
-    public async Task InvokeAsync(HttpContext context, ICurrentTenantService currentTenantService)
+    public async Task InvokeAsync(HttpContext context, ICurrentTenantService<TUser> currentTenantService)
     {
         
         TenantDbAccessGuard.SystemActive = false;
@@ -56,13 +56,13 @@ public class TenantResolver(RequestDelegate next, IServiceScopeFactory serviceSc
         {
             // Retrieve tenant ID from the user claims or other source
             var userManager = serviceScopeFactory.CreateScope().ServiceProvider
-                .GetRequiredService<UserManager<ApplicationUser>>();
-            var user = (await userManager.GetUserAsync(context.User));
+                .GetRequiredService<UserManager<TUser>>();
+            TUser user = (await userManager.GetUserAsync(context.User));
             if(user is null) return;
             var tenantId = user.TenantId;
 
             // Set the tenant ID in the cookie for the response
-            if (tenantId is not null or 0)
+            if (tenantId is not  0)
             {
                 
                 await currentTenantService.SetTenant((int)tenantId);

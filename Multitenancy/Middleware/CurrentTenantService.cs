@@ -1,15 +1,16 @@
 namespace ZambeziDigital.Multitenancy.Middleware;
-public interface ICurrentTenantService
+public interface ICurrentTenantService<TUser> where TUser : IdentityUser, IHasKey<string>,IMustHaveTenant, new() 
 {
     public string? ConnectionString { get; set; }
     int TenantId { get; set; }
     public Task<bool> SetTenant(int tenant);
     Task<bool> SetUser(string userFromHeader);
-    
     string UserId { get; set; }
-    ApplicationUser User { get; set; }
+    TUser User { get; set; }
 }
-public class CurrentTenantService(IServiceScopeFactory serviceScopeFactory) : ICurrentTenantService
+public class CurrentTenantService<TUser, TTenant> (IBaseDbContext<TUser, TTenant> baseDbContext) : ICurrentTenantService<TUser> 
+    where TUser : IdentityUser, IHasKey<string>, IMustHaveTenant, new()
+    where TTenant : class, ITenant
 {
     public string? ConnectionString { get; set; }
     public int TenantId { get; set; }
@@ -18,8 +19,7 @@ public class CurrentTenantService(IServiceScopeFactory serviceScopeFactory) : IC
     {
         try
         {
-            var context = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<BaseDbContext>();
-            var tenantInfo = await context.Tenants.Where(x => x.Id == tenant).FirstOrDefaultAsync(); // check if tenant exists
+            var tenantInfo = await baseDbContext.Tenants.Where(x => x.Id == tenant).FirstOrDefaultAsync(); // check if tenant exists
             if (tenantInfo != null)
             {
                 TenantId = tenant;
@@ -34,8 +34,6 @@ public class CurrentTenantService(IServiceScopeFactory serviceScopeFactory) : IC
         {
             throw new Exception("Tenant invalid");
         }
-       
-
     }
 
     public async Task<bool> SetUser(string userFromHeader)
@@ -44,8 +42,7 @@ public class CurrentTenantService(IServiceScopeFactory serviceScopeFactory) : IC
         {
             
             UserId = userFromHeader;
-            var context = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<BaseDbContext>();
-            var user = context.AspNetUsers.FirstOrDefault(x => x.Id == UserId); // check if user exists
+            TUser user = baseDbContext.AspNetUsers.FirstOrDefault(x => x.Id == UserId); // check if user exists
             if (user != null)
             {
                 UserId = user.Id;
@@ -63,5 +60,5 @@ public class CurrentTenantService(IServiceScopeFactory serviceScopeFactory) : IC
     }
 
     public string UserId { get; set; }
-    public ApplicationUser User { get; set; }
+    public TUser User { get; set; }
 }

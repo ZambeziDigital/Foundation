@@ -1,13 +1,11 @@
 global using ZambeziDigital.BasicAccess.Services.Contracts;
 namespace ZambeziDigital.Multitenancy.Services.Contracts;
 
-public interface ITenantSubscriptionService : IBaseService<TenantSubscription,int>;
-public interface ISubscriptionService : IBaseService<Subscription,int>;
 
-
-public interface ITenantService : IBaseService<Tenant, int>
+public interface ITenantService<TTenant> : IBaseService<TTenant, int>
+    where TTenant : class, ITenant, new()
 {
-    Tenant? CurrentTenant { get; set; }
-    Task<Tenant> GetCurrentTenant();
+    TTenant? CurrentTenant { get; set; }
+    Task<TTenant> GetCurrentTenant();
 }
 

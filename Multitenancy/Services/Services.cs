@@ -5,19 +5,18 @@ using ZambeziDigital.Multitenancy.Services.Contracts;
 
 namespace ZambeziDigital.Multitenancy.Services;
 
-public class TenantSubscriptionService(IServiceScopeFactory serviceScopeFactory) : BaseService<TenantSubscription, int>(serviceScopeFactory), ITenantSubscriptionService;
-public class TenantService(IServiceScopeFactory serviceScopeFactory) : BaseService<Tenant, int>(serviceScopeFactory), ITenantService
+public class TenantService<TTenant>(IServiceScopeFactory serviceScopeFactory) : BaseService<TTenant, int>(serviceScopeFactory), ITenantService<TTenant>
+    where TTenant : class, ITenant, new()
 {
-    public Tenant? CurrentTenant { get; set; }
-    public async Task<Tenant> GetCurrentTenant()
+    public TTenant? CurrentTenant { get; set; }
+    public async Task<TTenant> GetCurrentTenant()
     {
         if (CurrentTenant != null)
             return CurrentTenant;
         var httpClient = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("Auth");
         var request = await httpClient.GetAsync("api/Tenant/Current");
         if (!request.IsSuccessStatusCode) throw new Exception(request.ReasonPhrase);
-        CurrentTenant = await request.Content.ReadFromJsonAsync<Tenant>();
+        CurrentTenant = await request.Content.ReadFromJsonAsync<TTenant>();
         return CurrentTenant;
     }
 }
-public class SubscriptionService(IServiceScopeFactory serviceScopeFactory) : BaseService<Subscription, int>(serviceScopeFactory), ISubscriptionService;
