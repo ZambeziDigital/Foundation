@@ -15,7 +15,7 @@ namespace ZambeziDigital.Multitenancy.Data
         // DbSet<TAddress> Addresses { get; set; }
 
         int SaveChanges();
-        void OnConfiguring(DbContextOptionsBuilder optionsBuilder);
+        protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder);
         DatabaseFacade Database { get; } // Add this line
     }
 }

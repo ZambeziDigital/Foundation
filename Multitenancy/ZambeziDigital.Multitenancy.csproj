@@ -4,6 +4,18 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <Title>ZambeziDigital Multitenancy Library</Title>
+        <Authors>Ittai Tumelo</Authors>
+        <Company>Zambezi Digital</Company>
+        <Description>This packahge contains the instafaces and the classes that are used to make sure the multi tanant application being built.</Description>
+        <Copyright>Zambezi Digital</Copyright>
+        <PackageIcon>logo.png</PackageIcon>
+        <PackageTags>MultiTanancy</PackageTags>
+        <PackageReleaseNotes>Version 1 Preliminaries</PackageReleaseNotes>
+        <PackAsTool>False</PackAsTool>
+        <IncludeSymbols>True</IncludeSymbols>
+        <Version>1.0.3</Version>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.5" />
@@ -17,12 +29,18 @@
         <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Authentication\ZambeziDigital.Authentication.csproj" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Models\Isolated\" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Include="..\logo.png">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
     </ItemGroup>
 </Project>

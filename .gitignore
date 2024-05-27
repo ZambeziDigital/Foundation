@@ -1,0 +1,16 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/Authentication/obj
+/BasicAccess/obj
+/FileManager/obj
+/Logger/obj
+/MailManager/obj
+/Multitenancy/obj
+/Payments/obj
+/Server/obj
+/Authentication/bin/Debug
+/BasicAccess/bin/Debug
+/Multitenancy/bin/Debug
