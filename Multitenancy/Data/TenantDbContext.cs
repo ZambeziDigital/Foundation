@@ -1,11 +1,5 @@
-global using System.Data;
 global using Microsoft.EntityFrameworkCore;
-using System.Net.Mail;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using MySqlConnector;
-using ZambeziDigital.Multitenancy.Extensions;
-using ZambeziDigital.Multitenancy.Middleware;
-using ZambeziDigital.Multitenancy.Models.Contracts;
+global using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace ZambeziDigital.Multitenancy.Data
 {
