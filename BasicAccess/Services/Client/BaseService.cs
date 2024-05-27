@@ -72,7 +72,7 @@ public class BaseService<T, TKey>(IServiceScopeFactory serviceScopeFactory) : IB
         }
     }
 
-    public Task Delete(TKey id)
+    public Task<BasicResult> Delete(TKey id)
     {
         throw new NotImplementedException();
     }
@@ -94,7 +94,7 @@ public class BaseService<T, TKey>(IServiceScopeFactory serviceScopeFactory) : IB
         }
     }
 
-    public async Task<BasicResult> Delete(int id)
+    public async Task<BasicResult<object>> Delete(int id)
     {
         try
         {
@@ -103,7 +103,7 @@ public class BaseService<T, TKey>(IServiceScopeFactory serviceScopeFactory) : IB
             if (!request.IsSuccessStatusCode) throw new Exception(request.ReasonPhrase);
             var obj =  (await Get()).FirstOrDefault(x => x.Id.Equals(id) ) ?? throw new Exception("No object found");
             Objects.Remove(obj);
-            return new BasicResult { Succeeded = true, Errors = new List<string> { "Object deleted" } };
+            return new BasicResult<object> { Succeeded = true, Errors = new List<string> { "Object deleted" } };
         }
         catch (Exception e)
         {
