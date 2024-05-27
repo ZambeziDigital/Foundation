@@ -1,22 +1,23 @@
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using ZambeziDigital.Multitenancy.Data;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace ZambeziDigital.Multitenancy.Extensions;
 public static class MultipleDatabaseExtensions
 {
-    public static IServiceCollection AddAndMigrateTenantDatabases<TUser, TTenant>(
-        this IServiceCollection services, 
-        IConfiguration configuration, 
-        IBaseDbContext<TUser, TTenant>  baseDbContext, 
-        ITenantDbContext tenantDbContext)
+    public static IServiceCollection AddAndMigrateTenantDatabases<TUser, TTenant, TBaseContext, TTenantContext>(
+        this IServiceCollection services, IConfiguration configuration)
         where TUser : IdentityUser, IHasKey<string>, IMustHaveTenant, new()
         where TTenant : class, ITenant, new()
+        where TBaseContext : IdentityDbContext, IBaseDbContext<TUser, TTenant>
+        where TTenantContext : DbContext, ITenantDbContext
     {
         try
         {
             // Company Db Context (reference context) - get a list of tenants
             using IServiceScope scopeTenant = services.BuildServiceProvider().CreateScope();
+            TBaseContext baseDbContext = scopeTenant.ServiceProvider.GetRequiredService<TBaseContext>();
             if (baseDbContext.Database.GetPendingMigrations().Any())
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
@@ -37,6 +38,7 @@ public static class MultipleDatabaseExtensions
 
                 // Application Db Context (app - per tenant)
                 using IServiceScope scopeApplication = services.BuildServiceProvider().CreateScope();
+                TTenantContext tenantDbContext = scopeApplication.ServiceProvider.GetRequiredService<TTenantContext>();
                 tenantDbContext.Database.SetConnectionString(connectionString);
                 if (tenantDbContext.Database.GetPendingMigrations().Any())
                 {
