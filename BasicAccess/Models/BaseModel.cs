@@ -1,5 +1,4 @@
 namespace ZambeziDigital.BasicAccess.Models;
-
 public class BaseModel : IBaseModel<int>
 {
     public int Id { get; set; }

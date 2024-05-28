@@ -1,0 +1,12 @@
+global using System.ComponentModel.DataAnnotations;
+global using ZambeziDigital.BasicAccess.Models;
+global using ZambeziDigital.BasicAccess.Contracts;
+global using System.Net.Http.Json;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.EntityFrameworkCore;
+global using ZambeziDigital.BasicAccess.Contracts;
+global using ZambeziDigital.BasicAccess.Models;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.DependencyInjection;
+global using MySqlConnector;
+global using ZambeziDigital.BasicAccess.Services.Contracts;

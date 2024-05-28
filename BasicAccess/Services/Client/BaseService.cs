@@ -1,6 +1,4 @@
-global using System.Net.Http.Json;
-global using Microsoft.Extensions.DependencyInjection;
-global using ZambeziDigital.BasicAccess.Services.Contracts;
+using ZambeziDigital.BasicAccess.Services.Contracts;
 
 namespace ZambeziDigital.BasicAccess.Services.Client;
 public class BaseService<T, TKey>(IServiceScopeFactory serviceScopeFactory) : IBaseService<T,TKey>  where T : class, IHasKey<TKey>, new() where TKey : IEquatable<TKey>

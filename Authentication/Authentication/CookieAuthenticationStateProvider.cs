@@ -1,7 +1,3 @@
-using System.Text.Json;
-using ZambeziDigital.Authentication.DataTransferObjects;
-using ZambeziDigital.Authentication.Models;
-using ZambeziDigital.Authentication.Services.Contracts;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace ZambeziDigital.Authentication.Authentication;

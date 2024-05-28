@@ -1,6 +1,4 @@
 namespace ZambeziDigital.Authentication.Helpers;
-
-
 public class PasswordGenerator
 {
     private const string LowerCase = "abcdefghijklmnopqrstuvwxyz";

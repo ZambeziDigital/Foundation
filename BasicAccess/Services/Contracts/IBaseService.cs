@@ -1,7 +1,3 @@
-global using ZambeziDigital.BasicAccess.Contracts;
-global using ZambeziDigital.BasicAccess.Models;
-global using Microsoft.EntityFrameworkCore;
-
 namespace ZambeziDigital.BasicAccess.Services.Contracts;
 
 public interface IBaseService<T, TKey> where T : class, IHasKey<TKey>, new() where TKey : IEquatable<TKey>

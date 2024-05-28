@@ -1,4 +1,5 @@
-global using ZambeziDigital.BasicAccess.Services.Contracts;
+using ZambeziDigital.BasicAccess.Services.Contracts;
+
 namespace ZambeziDigital.Multitenancy.Services.Contracts;
 
 

@@ -1,5 +1,3 @@
-global using System.ComponentModel.DataAnnotations;
-
 namespace ZambeziDigital.BasicAccess.Contracts;
 
 public interface IBaseModel<TKey> : IHasKey<TKey> where TKey : IEquatable<TKey>

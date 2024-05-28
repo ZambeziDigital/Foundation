@@ -1,20 +1,11 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using ZambeziDigital.Authentication.Data;
-using ZambeziDigital.Authentication.DataTransferObjects;
-using ZambeziDigital.Authentication.Models;
-using ZambeziDigital.Authentication.Services.Contracts;
+namespace ZambeziDigital.Authentication.Controllers;
 
-namespace ZambeziDigital.Server.Controllers;
-
-public class UserController(IUserService service, IServiceScopeFactory _scopeFactory)
+public class UserController<TContext>(IUserService service, IServiceScopeFactory _scopeFactory)
     : BaseController<ApplicationUser, string>(service)
+    where TContext : DbContext, IBaseDbContext<ApplicationUser>
 {
     [HttpGet("FindByEmailAsync/{email}")]
-    public virtual async Task<ActionResult<ApplicationUser>> FindByEmailAsync(string email)
+    public async Task<ActionResult<ApplicationUser>> FindByEmailAsync(string email)
     {
         try
         {
@@ -34,7 +25,7 @@ public class UserController(IUserService service, IServiceScopeFactory _scopeFac
 
 
     [HttpPost("GetUserIdAsync")]
-    public virtual  async Task<ActionResult<string>> GetUserIdAsync(ApplicationUser user)
+    public async Task<ActionResult<string>> GetUserIdAsync(ApplicationUser user)
     {
         try
         {
@@ -51,7 +42,7 @@ public class UserController(IUserService service, IServiceScopeFactory _scopeFac
     }
 
     [HttpGet("AssignRole/{Id}/{role}")]
-    public  virtual async Task<ActionResult<BasicResult>> AssignRole(string Id, string role)
+    public async Task<ActionResult<BasicResult>> AssignRole(string Id, string role)
     {
         try
         {
@@ -63,7 +54,7 @@ public class UserController(IUserService service, IServiceScopeFactory _scopeFac
                     { Succeeded = false, Errors = new() { $"No user with Id {Id}" } });
             var result = await userManager.AddToRoleAsync(user, role);
             return result.Succeeded
-                ? new OkObjectResult(new BasicAccess.Models.BasicResult<ApplicationUser>() { Succeeded = true, Object = user })
+                ? new OkObjectResult(new BasicResult<ApplicationUser>() { Succeeded = true, Object = user })
                 : new BadRequestObjectResult(new BasicResult()
                     { Succeeded = false, Errors = result.Errors.Select(x => x.Description).ToList() });
         }
@@ -76,7 +67,7 @@ public class UserController(IUserService service, IServiceScopeFactory _scopeFac
 
 
     [HttpGet("Manage/Info")]
-    public virtual  async Task<ActionResult<UserInfo>> GetUserInfo()
+    public async Task<ActionResult<UserInfo>> GetUserInfo()
     {
         try
         {
@@ -98,12 +89,12 @@ public class UserController(IUserService service, IServiceScopeFactory _scopeFac
 
     //should return cookie stuff in the header
     [HttpPost("Login")]
-    public virtual  async Task<ActionResult<BasicResult>> Login(LoginRequestDto loginDto)
+    public async Task<ActionResult<BasicResult>> Login(LoginRequestDto loginDto)
     {
         try
         {
-            var dataContext = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<BaseDbContext>();
-            ApplicationUser user = dataContext.Set<ApplicationUser>().AsNoTracking().FirstOrDefault(x => x.Email == loginDto.Email);
+            var dataContext = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<TContext>();
+            var user = dataContext.Set<ApplicationUser>().AsNoTracking().FirstOrDefault(x => x.Email == loginDto.Email);
             if (user is null)
                 return new UnauthorizedObjectResult(new BasicResult
                 {
@@ -113,7 +104,7 @@ public class UserController(IUserService service, IServiceScopeFactory _scopeFac
                 .GetRequiredService<SignInManager<ApplicationUser>>()
                 .PasswordSignInAsync(user.UserName, loginDto.Password, true, true);
             if (result.Succeeded)
-                return new OkObjectResult(new BasicAccess.Models.BasicResult<ApplicationUser> { Succeeded = true, Object = user });
+                return new OkObjectResult(new BasicResult<ApplicationUser> { Succeeded = true, Object = user });
             return new UnauthorizedObjectResult(new BasicResult
             {
                 Succeeded = false, Errors =
@@ -129,7 +120,7 @@ public class UserController(IUserService service, IServiceScopeFactory _scopeFac
     [HttpPost("Logout")]
     [AllowAnonymous]
     [EnableCors]
-    public virtual  async Task<ActionResult<BasicResult>> Logout()
+    public async Task<ActionResult<BasicResult>> Logout()
     {
         try
         {

@@ -1,4 +1,4 @@
-namespace ZambeziDigital.Authentication.Services;
+namespace ZambeziDigital.Authentication.Services.Client;
 
 public class RoleService(IServiceScopeFactory serviceScopeFactory) : IRoleService
 {

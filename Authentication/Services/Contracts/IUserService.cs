@@ -1,6 +1,4 @@
-global using ZambeziDigital.Authentication.DataTransferObjects;
-global using ZambeziDigital.Authentication.Models;
-global using ZambeziDigital.BasicAccess.Services.Contracts;
+using ZambeziDigital.BasicAccess.Services.Contracts;
 
 namespace ZambeziDigital.Authentication.Services.Contracts;
 

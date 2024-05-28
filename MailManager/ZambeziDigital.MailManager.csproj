@@ -4,6 +4,28 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Authors>Ittai Tumelo</Authors>
+        <PackageIcon>logo.png</PackageIcon>
+        <PackageTags>MailKit, Zambezi Digital, SMTP</PackageTags>
+        <Company>ZambeziDigital</Company>
+        <Product>MailManager</Product>
     </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BasicAccess\ZambeziDigital.BasicAccess.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MailKit" Version="4.6.0" />
+      <PackageReference Include="MimeKit" Version="4.6.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="logo.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
+    </ItemGroup>
 
 </Project>

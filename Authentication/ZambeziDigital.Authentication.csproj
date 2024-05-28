@@ -12,7 +12,7 @@
         <Description>For Authentication with Individual Accounts and Cokies</Description>
         <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
         <PackageIcon>logo.png</PackageIcon>
-        <Version>1.0.3</Version>
+        <Version>1.0.5</Version>
     </PropertyGroup>
 
     <ItemGroup>
@@ -21,9 +21,8 @@
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\BasicAccess\ZambeziDigital.BasicAccess.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Services\Server\" />
+      <ProjectReference Include="..\MailManager\ZambeziDigital.MailManager.csproj" />
+      <ProjectReference Include="..\Server\ZambeziDigital.Server.csproj" />
     </ItemGroup>
     <ItemGroup>
       <None Include="..\logo.png">

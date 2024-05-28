@@ -1,5 +1,3 @@
-using ZambeziDigital.Authentication.DataTransferObjects;
-
 namespace ZambeziDigital.Authentication.Authentication;
 
 public interface IAccountManagement

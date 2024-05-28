@@ -1,5 +1,3 @@
-using MySqlConnector;
-
 namespace ZambeziDigital.BasicAccess.Services.Server;
 public class BaseService<T, Tkey, TContext>(IServiceScopeFactory serviceScopeFactory, TContext context)
     : IDbBaseService<T, Tkey, TContext>

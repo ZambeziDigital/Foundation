@@ -1,4 +1,3 @@
-global using ZambeziDigital.BasicAccess.Models;
 namespace ZambeziDigital.Authentication.Services.Client;
 public class UserService(IHttpClientFactory httpClientFactory, NavigationManager navigationManager) :  AuthenticationStateProvider, IUserService
 {

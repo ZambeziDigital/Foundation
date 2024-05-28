@@ -1,6 +1,4 @@
-﻿global using System.ComponentModel.DataAnnotations.Schema;
-
-namespace ZambeziDigital.BasicAccess.Models;
+﻿namespace ZambeziDigital.BasicAccess.Models;
 
 public interface IAddress : IBaseModel<int>
 {

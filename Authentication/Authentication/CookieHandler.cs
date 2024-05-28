@@ -1,8 +1,4 @@
-using Microsoft.AspNetCore.Components.WebAssembly.Http;
-
 namespace ZambeziDigital.Authentication.Authentication;
-
-
 public class CookieHandler : DelegatingHandler
 {
     /// <summary>

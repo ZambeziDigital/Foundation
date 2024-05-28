@@ -4,18 +4,18 @@ namespace ZambeziDigital.Multitenancy.Middleware;
 public interface ICurrentTenantService<TUser> where TUser : IdentityUser, IHasKey<string>,IMustHaveTenant, new() 
 {
     public string? ConnectionString { get; set; }
-    int TenantId { get; set; }
+    int? TenantId { get; set; }
     public Task<bool> SetTenant(int tenant);
     Task<bool> SetUser(string userFromHeader);
-    string UserId { get; set; }
-    TUser User { get; set; }
+    string? UserId { get; set; }
+    TUser? User { get; set; }
 }
 public class CurrentTenantService<TUser, TTenant> (IBaseDbContext<TUser, TTenant> baseDbContext) : ICurrentTenantService<TUser> 
     where TUser : IdentityUser, IHasKey<string>, IMustHaveTenant, new()
     where TTenant : class, ITenant
 {
     public string? ConnectionString { get; set; }
-    public int TenantId { get; set; }
+    public int? TenantId { get; set; }
 
     public async Task<bool> SetTenant(int tenant)
     {
@@ -44,7 +44,7 @@ public class CurrentTenantService<TUser, TTenant> (IBaseDbContext<TUser, TTenant
         {
             
             UserId = userFromHeader;
-            TUser user = baseDbContext.AspNetUsers.FirstOrDefault(x => x.Id == UserId); // check if user exists
+            TUser? user = baseDbContext.AspNetUsers.FirstOrDefault(x => x.Id == UserId); // check if user exists
             if (user != null)
             {
                 UserId = user.Id;
@@ -62,5 +62,5 @@ public class CurrentTenantService<TUser, TTenant> (IBaseDbContext<TUser, TTenant
     }
 
     public string UserId { get; set; }
-    public TUser User { get; set; }
+    public TUser? User { get; set; }
 }

@@ -1,4 +1,4 @@
-namespace Books.Shared.Models.Helpers;
+namespace ZambeziDigital.MailManager.Models;
 
 public class MailRequest
 {
