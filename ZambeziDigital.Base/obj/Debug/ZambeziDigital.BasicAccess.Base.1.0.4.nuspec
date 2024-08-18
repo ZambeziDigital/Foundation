@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>ZambeziDigital.BasicAccess.Base</id>
+    <version>1.0.4</version>
+    <title>Zambezi Digital Basics</title>
+    <authors>Ittai Tumelo</authors>
+    <icon>logo.png</icon>
+    <description>Package Description</description>
+    <copyright>Zambezi Digital</copyright>
+    <repository type="git" commit="ac2bcdec06be6f1b5cf33671a19538437f5d38e3" />
+    <dependencies>
+      <group targetFramework="net8.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="/Users/ittaitumelo/RiderProjects/ZambeziDigital/BasicAccess/bin/Debug/net8.0/ZambeziDigital.BasicAccess.Base.dll" target="lib/net8.0/ZambeziDigital.BasicAccess.Base.dll" />
+    <file src="/Users/ittaitumelo/RiderProjects/ZambeziDigital/logo.png" target="/logo.png" />
+  </files>
+</package>

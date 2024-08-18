@@ -1,0 +1,12 @@
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/BasicAccess/bin/Debug/net8.0/ZambeziDigital.BasicAccess.Base.deps.json
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/BasicAccess/bin/Debug/net8.0/ZambeziDigital.BasicAccess.Base.dll
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/BasicAccess/bin/Debug/net8.0/ZambeziDigital.BasicAccess.Base.pdb
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/BasicAccess/obj/Debug/net8.0/ZambeziDigital.BasicAccess.Base.GeneratedMSBuildEditorConfig.editorconfig
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/BasicAccess/obj/Debug/net8.0/ZambeziDigital.BasicAccess.Base.AssemblyInfoInputs.cache
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/BasicAccess/obj/Debug/net8.0/ZambeziDigital.BasicAccess.Base.AssemblyInfo.cs
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/BasicAccess/obj/Debug/net8.0/ZambeziDigital.BasicAccess.Base.csproj.CoreCompileInputs.cache
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/BasicAccess/obj/Debug/net8.0/ZambeziDigital.BasicAccess.Base.sourcelink.json
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/BasicAccess/obj/Debug/net8.0/ZambeziDigital.BasicAccess.Base.dll
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/BasicAccess/obj/Debug/net8.0/refint/ZambeziDigital.BasicAccess.Base.dll
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/BasicAccess/obj/Debug/net8.0/ZambeziDigital.BasicAccess.Base.pdb
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/BasicAccess/obj/Debug/net8.0/ref/ZambeziDigital.BasicAccess.Base.dll

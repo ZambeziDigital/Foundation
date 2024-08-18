@@ -1,0 +1,16 @@
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/Server/bin/Debug/net8.0/ZambeziDigital.Server.deps.json
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/Server/bin/Debug/net8.0/ZambeziDigital.Server.dll
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/Server/bin/Debug/net8.0/ZambeziDigital.Server.pdb
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/Server/obj/Debug/net8.0/ZambeziDigital.Server.csproj.AssemblyReference.cache
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/Server/obj/Debug/net8.0/ZambeziDigital.Server.GeneratedMSBuildEditorConfig.editorconfig
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/Server/obj/Debug/net8.0/ZambeziDigital.Server.AssemblyInfoInputs.cache
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/Server/obj/Debug/net8.0/ZambeziDigital.Server.AssemblyInfo.cs
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/Server/obj/Debug/net8.0/ZambeziDigital.Server.csproj.CoreCompileInputs.cache
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/Server/obj/Debug/net8.0/ZambeziDigital.Server.sourcelink.json
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/Server/obj/Debug/net8.0/ZambeziDigital.Server.csproj.CopyComplete
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/Server/obj/Debug/net8.0/ZambeziDigital.Server.dll
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/Server/obj/Debug/net8.0/refint/ZambeziDigital.Server.dll
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/Server/obj/Debug/net8.0/ZambeziDigital.Server.pdb
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/Server/obj/Debug/net8.0/ref/ZambeziDigital.Server.dll
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/Server/bin/Debug/net8.0/ZambeziDigital.BasicAccess.Base.dll
+/Users/ittaitumelo/RiderProjects/ZambeziDigital/Server/bin/Debug/net8.0/ZambeziDigital.BasicAccess.Base.pdb

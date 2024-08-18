@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <Title>Zambezi Digital Basics</Title>
+        <Copyright>Zambezi Digital</Copyright>
+        <PackageIcon>logo.png</PackageIcon>
+        <Company>Zambezi Digital</Company>
+        <Authors>Ittai Tumelo</Authors>
+        <Version>8.1.14</Version>
+    </PropertyGroup>
+    
+    <ItemGroup>
+      <None Include="..\logo.png">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="Models\Base\" />
+      <Folder Include="Models\H\" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
+      <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="8.0.6" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    </ItemGroup>
+</Project>

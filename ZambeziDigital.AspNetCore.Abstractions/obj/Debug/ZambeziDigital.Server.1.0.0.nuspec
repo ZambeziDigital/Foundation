@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>ZambeziDigital.Server</id>
+    <version>1.0.0</version>
+    <title>Server Base COnfiguration with Generic Model</title>
+    <authors>Ittai Tumelo</authors>
+    <icon>logo.png</icon>
+    <description>This package has the base Controler model that can be used to speed track the creation of crud operations of a model</description>
+    <releaseNotes>Initial</releaseNotes>
+    <copyright>Zambezi Digital</copyright>
+    <tags>Server, ASPNet, API</tags>
+    <repository type="git" commit="ac2bcdec06be6f1b5cf33671a19538437f5d38e3" />
+    <dependencies>
+      <group targetFramework="net8.0">
+        <dependency id="ZambeziDigital.BasicAccess.Base" version="1.0.4" exclude="Build,Analyzers" />
+        <dependency id="MailKit" version="4.6.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.OpenApi" version="8.0.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="/Users/ittaitumelo/RiderProjects/ZambeziDigital/Server/bin/Debug/net8.0/ZambeziDigital.Server.dll" target="lib/net8.0/ZambeziDigital.Server.dll" />
+    <file src="/Users/ittaitumelo/RiderProjects/ZambeziDigital/Server/logo.png" target="logo.png" />
+  </files>
+</package>
