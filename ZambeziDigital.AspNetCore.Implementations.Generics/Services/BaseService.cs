@@ -27,12 +27,27 @@ public class BaseService<T, Tkey, TContext>(TContext context)
 
     public virtual async Task<BaseResult<List<T>>> Search(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false)
     {
-        return new BaseResult<List<T>>()
+        try
         {
-            Succeeded = true,
-            Data = (await Get(paged, page, pageSize, cached)).Data?.Where(x => x.SearchString.Contains(query, StringComparison.OrdinalIgnoreCase)).ToList()
+            
+            return new BaseResult<List<T>>()
+            {
+                Succeeded = true,
+                Data = (await Get(paged, page, pageSize, cached)).Data?.Where(x => x.SearchString.Contains(query, StringComparison.OrdinalIgnoreCase)).ToList()
 
-        };
+            };
+        }
+        catch (Exception e)
+        {
+           var result = new BaseResult<List<T>>()
+            {
+                Succeeded = false,
+                Errors = new List<string> { e.Message },
+                Message = e.Message,
+                Data = new()
+            };
+            return result;
+        }
     }
 
     public virtual async Task<BaseResult<T>> Create(T entity)
@@ -52,11 +67,11 @@ public class BaseService<T, Tkey, TContext>(TContext context)
     public virtual async Task<BaseResult> Delete(Tkey id)
     {
         var entity = await context.Set<T>().FindAsync(id);
+        entity.IsDeleted = true;
         if (entity == null)
         {
             return new BaseResult { Succeeded = false, Errors = ["Entity not found"] };
         }
-        context.Set<T>().Remove(entity);
         await context.SaveChangesAsync();
         return new BaseResult { Succeeded = true, Errors = ["Entity deleted"] };
     }

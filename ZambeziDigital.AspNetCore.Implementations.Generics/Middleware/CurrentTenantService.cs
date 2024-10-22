@@ -14,8 +14,8 @@ public interface IBaseCurrentTenantService<TUser> where TUser : IApplicationUser
     public string? ConnectionString { get; set; }
     int TenantId { get; set; }
     public Task<bool> SetTenant(int tenant);
-    Task<bool> SetUser(StringValues userFromHeader);
-    
+    Task<bool> SetUser(StringValues userFromHeader); 
+    Task<bool> TurnOnKeyedAccess();
     string UserId { get; set; }
     TUser User { get; set; }
 }
@@ -79,6 +79,11 @@ public class BaseCurrentTenantService<TUser, TBaseContext, TTenant>(IServiceScop
         }
         return false;
 
+    }
+
+    public Task<bool> TurnOnKeyedAccess()
+    {
+        throw new NotImplementedException();
     }
 
     public string UserId { get; set; }

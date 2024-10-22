@@ -75,7 +75,7 @@ public class UserService<TUser, TUserAdd, TUserInfo, TContext, TLoginRequest>(
         //Mail the new User the password
         var mail = new MailRequest
         {
-            ToEmail = dto.Email,
+            ToEmails = [dto.Email],
             Subject = "New User Account",
             Body =
                 $"Dear {dto.UserName}, <br> Your account has been created successfully. <br> Your username is {dto.UserName} <br> Your password is {dto.Password} <br> Please change your password after login. <br> Regards, <br> System Administrator"
@@ -251,7 +251,7 @@ public class UserService<TUser, TUserAdd, TUserInfo, TContext, TLoginRequest>(
         //Mail the new User the password
         var mail = new MailRequest
         {
-            ToEmail = user.Email,
+            ToEmails = [user.Email],
             Subject = "New User Account",
             Body =
                 $"Dear {user.UserName}, <br> Your account has been created successfully. <br> Your username is {user.UserName} <br> Your password is {dto.Password} <br> Please change your password after login. <br> Regards, <br> System Administrator"

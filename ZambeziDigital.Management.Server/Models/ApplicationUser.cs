@@ -4,7 +4,7 @@ using ZambeziDigital.Base.Contracts.Base;
 using ZambeziDigital.Base.Contracts.Tenancy;
 using ZambeziDigital.Base.DTOs.Auth;
 
-namespace ZambeziDigital.Management.Server
+namespace ZambeziDigital.Management.Server.Models
 {
     public class ApplicationUser : IdentityUser, IHasKey<string>, IMustHaveTenant
     {
@@ -17,7 +17,7 @@ namespace ZambeziDigital.Management.Server
         // public Tenant? Tenant { get; set; }
         public List<IdentityRole>? Roles { get; set; } = new();
         public UserState Active { get; set; } = UserState.Active;
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         // public ApplicationUser() { }
         // public ApplicationUser(ApplicationUserAddRequest request)
         // {
@@ -29,5 +29,6 @@ namespace ZambeziDigital.Management.Server
         //     Name = $"{request.FirstName} {request.LastName}".Replace("  ", " ");
         // }
 
+        public bool IsDeleted { get; set; }
     }
 }

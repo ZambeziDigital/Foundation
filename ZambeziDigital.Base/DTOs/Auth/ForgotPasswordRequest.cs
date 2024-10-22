@@ -2,7 +2,9 @@ namespace ZambeziDigital.Base.DTOs.Auth;
 
 public interface IForgotPasswordRequest
 {
+    public string UserName { get; set; }
     public string Email { get; set; }
+    public string Phone { get; set; }
 }
 
 public interface IResetPasswordRequest

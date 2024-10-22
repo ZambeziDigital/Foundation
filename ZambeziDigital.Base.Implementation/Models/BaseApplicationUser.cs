@@ -7,11 +7,12 @@ namespace ZambeziDigital.Base.Implementation.Models;
 public class BaseApplicationUser : IdentityUser, IApplicationUser
 {
     public string Id { get; set; }
+    public bool IsDeleted { get; set; }
     public string Name { get; set; }
     public string? Password { get; set; }
     public List<IdentityRole>? Roles { get; set; }
     public UserState Active { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }
 
 public class BaseApplicationUserInfo : IUserInfo

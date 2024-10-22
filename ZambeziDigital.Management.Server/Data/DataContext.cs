@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ZambeziDigital.Base.Accounting.Models;
 using ZambeziDigital.Base.Implementation.Models;
+using ZambeziDigital.Management.Server.Models;
 
 namespace ZambeziDigital.Management.Server.Data;
 

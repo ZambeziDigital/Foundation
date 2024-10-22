@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ZambeziDigital.Management.Server;
 using ZambeziDigital.Management.Server.Data;
+using ZambeziDigital.Management.Server.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -57,7 +58,7 @@ app.MapGet("/weatherforecast", () =>
         var forecast = Enumerable.Range(1, 5).Select(index =>
                 new WeatherForecast
                 (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+                    DateOnly.FromDateTime(DateTime.UtcNow.AddDays(index)),
                     Random.Shared.Next(-20, 55),
                     summaries[Random.Shared.Next(summaries.Length)]
                 ))

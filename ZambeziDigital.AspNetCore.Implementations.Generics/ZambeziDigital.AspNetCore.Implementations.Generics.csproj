@@ -8,7 +8,7 @@
         <Title>ZambeziDigital.AspNetCore.Implementations.Generics</Title>
         <Authors>Ittai Tumelo</Authors>
         <PackageIcon>logo.png</PackageIcon>
-        <Version>8.0.14</Version>
+        <Version>8.4.1</Version>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,8 +17,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.6" />
-      <PackageReference Include="Serilog" Version="4.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
+      <PackageReference Include="Serilog" Version="4.0.2" />
+      <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.8.1" />
     </ItemGroup>
 
     <ItemGroup>
@@ -29,3 +30,5 @@
     </ItemGroup>
 
 </Project>
+
+<!--        "DefaultConnection": "Server=localhost,3306;Database=SmartInvoicing;User id=root; Password=root@wirepick123!;SSL Mode=None;Pooling=true;Connect Timeout=28800;Command Timeout=28800;AllowPublicKeyRetrieval=True"-->

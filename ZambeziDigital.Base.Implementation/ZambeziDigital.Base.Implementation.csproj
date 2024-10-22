@@ -7,17 +7,18 @@
         <Title>ZambeziDigital.Base.Implementation</Title>
         <Authors>Ittai Tumelo</Authors>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>8.0.12</Version>
+        <Version>8.1.2</Version>
         <PackageIcon>logo.png</PackageIcon>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ZambeziDigital.Base.Accounting\ZambeziDigital.Base.Accounting.csproj" />
+<!--      <ProjectReference Include="..\ZambeziDigital.Base.Accounting\ZambeziDigital.Base.Accounting.csproj" />-->
       <ProjectReference Include="..\ZambeziDigital.Base\ZambeziDigital.Base.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
+      <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
     </ItemGroup>
 
     <ItemGroup>

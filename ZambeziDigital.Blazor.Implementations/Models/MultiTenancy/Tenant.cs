@@ -1,13 +1,10 @@
 using ZambeziDigital.Base.Contracts.Tenancy;
+using ZambeziDigital.Base.Models;
 
 namespace ZambeziDigital.Blazor.Implementations.Models.MultiTenancy;
 
-public class Tenant : ITenant
+public class Tenant : BaseModel<int>, ITenant
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
     public string? ConnectionString { get; set; }
     public string? Logo { get; set; }
     public string? Phone { get; set; }

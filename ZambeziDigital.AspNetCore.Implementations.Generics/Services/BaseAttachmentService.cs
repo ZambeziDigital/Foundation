@@ -32,9 +32,7 @@ public class BaseAttachmentService<TDataContext>(IServiceScopeFactory serviceSco
                 };
             }
         }
-
         return result;
-
     }
 
     public override Task<BaseResult<BaseAttachment>> Create(BaseAttachment entity)
