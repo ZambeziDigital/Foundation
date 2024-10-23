@@ -170,7 +170,7 @@ public class BaseService<T, TKey>(IServiceScopeFactory serviceScopeFactory) : IB
         {
             var httpClient = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("Auth");
             var request = await httpClient.DeleteAsync($"api/{typeof(T).Name}/{id}");
-            if (!request.Result.IsSuccessStatusCode) throw new Exception(request.Result.ReasonPhrase);
+            if (!request.IsSuccessStatusCode) throw new Exception(request.ReasonPhrase);
             return new BaseResult()
             {
                 Succeeded = true
