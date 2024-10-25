@@ -9,8 +9,8 @@
         <Copyright>Zambezi Digital</Copyright>
         <PackageIcon>logo.png</PackageIcon>
         <Company>Zambezi Digital</Company>
-        <Authors>Ittai Tumelo</Authors>
-        <Version>8.3.2</Version>
+        <Authors>Ittai Tumelo, Zimba Isaac</Authors>
+        <Version>8.3.3</Version>
     </PropertyGroup>
     
     <ItemGroup>

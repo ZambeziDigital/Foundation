@@ -15,6 +15,8 @@ public interface IBaseService<T, TKey>
     Task<BaseResult<T>> Get(TKey id, bool cached = false);
     Task<BaseResult<T>> Update(T t);
     Task<BaseResult> Delete(TKey id);
+    Task<BaseResult> Delete(List<TKey> id);
+    Task<BaseResult> Delete(List<SelectableModel<T>> selectableModels);
 }
 
 

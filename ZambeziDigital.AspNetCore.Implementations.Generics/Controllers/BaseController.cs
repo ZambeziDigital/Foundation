@@ -62,9 +62,8 @@ public class BaseController<T, TKey>(IBaseService<T, TKey> service) :
     /// <returns>A task that represents the asynchronous operation. The task result contains the updated entity.</returns>
     [HttpDelete("{id}")]
     [SwaggerOperation(
-        Summary = $"Delete by Id",
-        Description = "Delete entity by Id", Tags = new[] { "Delete" },
-        OperationId = "Delete" + nameof(T) + "ById"
+        Summary = $"Delete",
+        Description = "Delete entity by Id", Tags = new[] { "Delete" }
         )]
     public virtual async Task<ActionResult<BaseResult>> Delete(TKey id)
     {
@@ -90,6 +89,44 @@ public class BaseController<T, TKey>(IBaseService<T, TKey> service) :
         }
     }
     
+    
+    /// <summary>
+    /// Updates an existing entity.
+    /// </summary>
+    /// <param name="entity">The entity to update.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the updated entity.</returns>
+    [HttpDelete("{id}")]
+    [SwaggerOperation(
+        Summary = $"Delete Multiple",
+        Description = "Delete entity by Id", Tags = new[] { "Delete" }
+        )]
+    public virtual async Task<ActionResult<BaseResult>> Delete(List<TKey> id)
+    {
+        try
+        {
+            Log.Information("Deleting entity with id {@id}", id);
+            await service.Delete(id);
+            Log.Information("Entity with id {@id} deleted", id);
+            return new BaseResult()
+            {
+                Succeeded = true,
+            };
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "Error deleting entity with id {@id}", id);
+            return (new BaseResult()
+            {
+                Succeeded = false,
+                Errors = [e.Message],
+                Data = null
+            });
+        }
+    }
+    
+    
+    
+    
     /// <summary>
     /// Gets an entity by its identifier.
     /// </summary>
@@ -97,7 +134,7 @@ public class BaseController<T, TKey>(IBaseService<T, TKey> service) :
     /// <returns>A task that represents the asynchronous operation. The task result contains the retrieved entity.</returns>
     [HttpGet("{id}")]
     [SwaggerOperation(
-        Summary = $"Get by Id",
+        Summary = $"Get",
         Description = "Get entity by Id"
         )]
     public virtual async Task<ActionResult<BaseResult<T>>> Get(TKey id)
