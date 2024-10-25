@@ -73,7 +73,20 @@ public class BaseService<T, Tkey, TContext>(TContext context)
             return new BaseResult { Succeeded = false, Errors = ["Entity not found"] };
         }
         await context.SaveChangesAsync();
-        return new BaseResult { Succeeded = true, Errors = ["Entity deleted"] };
+        return new BaseResult { Succeeded = true, Errors = ["Entity deleted"], Message = "Entity deleted" };
+    }
+
+    public async Task<BaseResult> Delete(List<Tkey> id)
+    {
+        var entities = await context.Set<T>().Where(x => id.Contains(x.Id)).ToListAsync();
+        entities.ForEach(x => x.IsDeleted = true);
+        await context.SaveChangesAsync();
+        return new BaseResult { Succeeded = true, Errors = ["Entities deleted"], Message = $"{id.Count} deleted" };
+    }
+
+    public async Task<BaseResult> Delete(List<SelectableModel<T>> selectableModels)
+    {
+        return await Delete(selectableModels.Where(x => x.Selected).Select(x => x.Object.Id).ToList());
     }
 
     public virtual async Task<BaseResult<T>> Get(Tkey id, bool cached = false)

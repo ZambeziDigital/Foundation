@@ -54,6 +54,22 @@ public class BaseUserService(IHttpClientFactory httpClientFactory, NavigationMan
 
     }
 
+    public async Task<BaseResult> Delete(List<string> id)
+    {
+        var request = await _httpClient.PostAsJsonAsync($"api/User/Delete", id);
+        if (!request.IsSuccessStatusCode)
+        {
+            var result = await request.Content.ReadFromJsonAsync<BaseResult>();
+            throw new Exception(result?.Errors?[0] ?? request.ReasonPhrase);
+        }
+        return await request.Content.ReadFromJsonAsync<BaseResult>();
+    }
+
+    public async Task<BaseResult> Delete(List<SelectableModel<BaseApplicationUser>> selectableModels)
+    {
+        return await Delete(selectableModels.Where(x => x.Selected).Select(x => x.Object.Id).ToList());
+    }
+
     public async Task<BaseResult<BaseApplicationUser>> Login(LoginDto loginDto)
     {
         var request = await _httpClient.PostAsJsonAsync($"api/User/Login", loginDto);

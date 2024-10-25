@@ -189,6 +189,36 @@ public class BaseService<T, TKey>(IServiceScopeFactory serviceScopeFactory) : IB
         }
     }
 
+    public async Task<BaseResult> Delete(List<TKey> id)
+    {
+        try
+        {
+            var httpClient = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("Auth");
+            var request = await httpClient.PostAsJsonAsync($"api/{typeof(T).Name}/delete", id);
+            if (!request.IsSuccessStatusCode) throw new Exception(request.ReasonPhrase);
+            return new BaseResult()
+            {
+                Succeeded = true
+            };
+        }
+        catch (Exception e)
+        {
+            return
+                new BaseResult
+                {
+                    Succeeded = false,
+                    Errors = new List<string>() { e.Message },
+                    Message = e.Message,
+                    Data = null
+                };
+        }
+    }
+
+    public async Task<BaseResult> Delete(List<SelectableModel<T>> selectableModels)
+    {
+        return await Delete(selectableModels.Where(x => x.Selected).Select(x => x.Object.Id).ToList());
+    }
+
     public virtual async Task<BaseResult<T>> Update(T t)
     {
         try

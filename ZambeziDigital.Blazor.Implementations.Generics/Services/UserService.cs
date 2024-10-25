@@ -64,6 +64,22 @@ public class UserService<TUser, TUserAdd, TUserInfo, TForgotPasswordRequest, TRe
 
     }
 
+    public async Task<BaseResult> Delete(List<string> id)
+    {
+        var request = await _httpClient.DeleteAsync($"api/User/{id}");
+        if (!request.IsSuccessStatusCode)
+        {
+            var result = await request.Content.ReadFromJsonAsync<BaseResult>();
+            throw new Exception(result?.Errors?[0] ?? request.ReasonPhrase);
+        }
+        return await request.Content.ReadFromJsonAsync<BaseResult>();
+    }
+
+    public async Task<BaseResult> Delete(List<SelectableModel<TUser>> selectableModels)
+    {
+        return await Delete(selectableModels.Where(x => x.Selected).Select(x => x.Object.Id).ToList());
+    }
+
     public async Task<BaseResult> Logout(string? page)
     {
         var result = await _httpClient.PostAsync("api/User/Logout", null);
