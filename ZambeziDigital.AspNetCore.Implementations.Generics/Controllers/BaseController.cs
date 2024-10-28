@@ -95,7 +95,7 @@ public class BaseController<T, TKey>(IBaseService<T, TKey> service) :
     /// </summary>
     /// <param name="entity">The entity to update.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the updated entity.</returns>
-    [HttpDelete("{id}")]
+    [HttpPost("Multiple")]
     [SwaggerOperation(
         Summary = $"Delete Multiple",
         Description = "Delete entity by Id", Tags = new[] { "Delete" }

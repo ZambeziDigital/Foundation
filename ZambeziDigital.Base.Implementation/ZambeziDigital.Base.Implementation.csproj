@@ -7,7 +7,7 @@
         <Title>ZambeziDigital.Base.Implementation</Title>
         <Authors>Ittai Tumelo</Authors>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>8.1.2</Version>
+        <Version>8.2.2</Version>
         <PackageIcon>logo.png</PackageIcon>
     </PropertyGroup>
 

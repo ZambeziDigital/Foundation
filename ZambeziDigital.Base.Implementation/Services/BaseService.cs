@@ -194,7 +194,7 @@ public class BaseService<T, TKey>(IServiceScopeFactory serviceScopeFactory) : IB
         try
         {
             var httpClient = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("Auth");
-            var request = await httpClient.PostAsJsonAsync($"api/{typeof(T).Name}/delete", id);
+            var request = await httpClient.PostAsJsonAsync($"api/{typeof(T).Name}/delete/Multiple", id);
             if (!request.IsSuccessStatusCode) throw new Exception(request.ReasonPhrase);
             return new BaseResult()
             {
