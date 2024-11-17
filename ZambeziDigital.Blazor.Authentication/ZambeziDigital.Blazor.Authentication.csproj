@@ -10,7 +10,7 @@
         <Description>This package is in holds the basic cookie handler and IAccount manager for use when you are using custom individual authentication.
 It requires that you have ZAmbezi Digital's Base Package</Description>
         <PackageIcon>logo.png</PackageIcon>
-        <Version>8.0.6</Version>
+        <Version>8.1.0</Version>
     </PropertyGroup>
 
     <ItemGroup>

@@ -343,12 +343,24 @@ public class UserService<TUser, TUserAdd, TUserInfo, TForgotPasswordRequest, TRe
         return user ?? throw new Exception("No objects were found");
     }
 
-    public Task<BaseResult<List<TUser>>> Get(bool paged = false, int page = 0, int pageSize = 10, bool cached = false)
+    public Task<BaseListResult<TUser>> Get(bool paged = false, int page = 0, int pageSize = 10, bool cached = false)
     {
         throw new NotImplementedException();
     }
 
-    public Task<BaseResult<List<TUser>>> Search(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false)
+    public Task<BaseListResult<TUser>> Search(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<BaseListResult<TUser>> Get(bool paged = false, int page = 0, int pageSize = 10, bool cached = false, string? sortBy = null,
+        bool reversed = false)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<BaseListResult<TUser>> Search(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false,
+        string? sortBy = null, bool reversed = false)
     {
         throw new NotImplementedException();
     }

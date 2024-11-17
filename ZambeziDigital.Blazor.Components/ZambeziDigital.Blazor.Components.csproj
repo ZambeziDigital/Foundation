@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Version>8.0.4</Version>
+        <Title>Reusable Blazor Components</Title>
+        <Description>More coming soon</Description>
+    </PropertyGroup>
+
+
+    <ItemGroup>
+        <SupportedPlatform Include="browser"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.7"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ZambeziDigital.Base.Implementation\ZambeziDigital.Base.Implementation.csproj" />
+      <ProjectReference Include="..\ZambeziDigital.Base\ZambeziDigital.Base.csproj" />
+      <ProjectReference Include="..\ZambeziDigital.Functions\ZambeziDigital.Functions.csproj" />
+    </ItemGroup>
+
+</Project>

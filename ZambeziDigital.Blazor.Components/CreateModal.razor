@@ -1,0 +1,77 @@
+@typeparam T where T : class, IHasKey<TKey>, new();
+@typeparam TKey where TKey : IEquatable<TKey>;
+@using ZambeziDigital.Functions.Helpers
+@typeparam TService where TService : IBaseService<T, TKey>;
+@inject TService Service
+
+<!-- Modal -->
+<div id="genericCreate" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenteredScrollableTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenteredScrollableTitle">Add @typeof(T).Name</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @foreach (var property in PropertyBindings)
+                {
+                    <!-- Form -->
+                    <div class="mb-4">
+                        <label for="emailLabel" class="form-label">@property.Name</label>
+                        <input type="text" class="form-control" name="company name" id="emailLabel" placeholder="@property.Name"
+                               aria-label="@property.Name" @bind="property.Value"> 
+                    </div>
+                    <!-- End Form -->
+                    
+                    
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-bs-dismiss="modal">Close</button>
+                <button type="button" @onclick="Create" class="btn btn-primary" disabled="@isloading">
+                    @if (isloading)
+                    {
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    }
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+
+@code {
+    private T Property { get; set; } = new();
+    bool isloading = false;
+    List<DigitalProperty> Properties { get; set; } = new();
+    List<PropertyBinding> PropertyBindings { get; set; } = new();
+    protected override void OnInitialized()
+    {
+        Properties = GetProperties<PassOnCreate>(Property);
+        PropertyBindings = Properties.Select(p => new PropertyBinding { Name = p.Name, Value = p.Name }).ToList();
+
+    }
+    
+    class PropertyBinding {
+        public string Name { get; set; }
+        public string Value { get; set; }
+    }
+
+    private async Task Create()
+    {
+        //initialize the object, converting the string values to the correct type
+        foreach (var property in PropertyBindings)
+        {
+            // get the property from T and set the value
+            var prop = Property.GetType().GetProperty(property.Name.Replace(" ", ""));
+            prop.SetValue(Property, Convert.ChangeType(property.Value, prop.PropertyType));
+        }
+        isloading = true;
+        StateHasChanged();
+        var result = await Service.Create(Property);
+        isloading = false;
+    }
+    
+
+}

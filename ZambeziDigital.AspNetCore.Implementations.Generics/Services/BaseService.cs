@@ -12,40 +12,92 @@ public class BaseService<T, Tkey, TContext>(TContext context)
 {
     protected readonly TContext context = context;
 
-    public virtual async Task<BaseResult<List<T>>> Get(bool paged = false, int page = 0, int pageSize = 10, bool cached = false)
+    public virtual async Task<BaseListResult<T>> Get(bool paged = false, int page = 0, int pageSize = 10, bool cached = false, string? sortBy = null, bool reversed = false)
     {
-
-        return new BaseResult<List<T>>()
+        var Property = typeof(T).GetProperties().FirstOrDefault(x => x.Name == sortBy);
+        if (Property == null)
+        {
+            Property = typeof(T).GetProperties().FirstOrDefault(x => x.Name == "Id");
+        }
+        return new BaseListResult<T>
         {
             Succeeded = true,
             Data = paged
-                ? await context.Set<T>().Skip(page * pageSize).Take(pageSize).ToListAsync()
-                : await context.Set<T>().ToListAsync()
+                ? reversed ? await context.Set<T>()
+                    // .OrderByDescending(x => Property.GetValue(x))
+                    .Skip(page * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync()
+                    : await context.Set<T>()
+                    // .OrderBy(x => Property.GetValue(x))
+                    .Skip(page * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync()
+                : reversed ?
+                    await context.Set<T>()
+                    // .OrderByDescending(x => Property.GetValue(x))
+                    .ToListAsync()
+                    : await context.Set<T>()
+                    .ToListAsync(),
+            TotalCount = await context.Set<T>().CountAsync(),
+            CurrentPage = page,
+            PageSize = pageSize,
+            SortBy = sortBy
         };
 
     }
 
-    public virtual async Task<BaseResult<List<T>>> Search(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false)
+    public virtual async Task<BaseListResult<T>> Search(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false, string? sortBy = null, bool reversed = false)
     {
         try
         {
-            
-            return new BaseResult<List<T>>()
+            var Property = typeof(T).GetProperties().FirstOrDefault(x => x.Name == sortBy);
+            if (Property == null)
+            {
+                Property = typeof(T).GetProperties().FirstOrDefault(x => x.Name == "Id");
+            }
+            return new BaseListResult<T>
             {
                 Succeeded = true,
-                Data = (await Get(paged, page, pageSize, cached)).Data?.Where(x => x.SearchString.Contains(query, StringComparison.OrdinalIgnoreCase)).ToList()
-
+                Data = paged
+                    ? reversed ? await context.Set<T>()
+                            // .OrderByDescending(x => Property.GetValue(x))
+                            .Skip(page * pageSize)
+                            .Take(pageSize)
+                            .ToListAsync()
+                        : await context.Set<T>()
+                            // .OrderBy(x => Property.GetValue(x))
+                            .Skip(page * pageSize)
+                            .Take(pageSize)
+                            .ToListAsync()
+                    : reversed ?
+                        await context.Set<T>()
+                            // .OrderByDescending(x => Property.GetValue(x))
+                            .ToListAsync()
+                        : await context.Set<T>()
+                            .ToListAsync(),
+                TotalCount = await context.Set<T>().CountAsync(),
+                CurrentPage = page,
+                PageSize = pageSize,
+                SortBy = sortBy
             };
         }
         catch (Exception e)
         {
-           var result = new BaseResult<List<T>>()
-            {
-                Succeeded = false,
-                Errors = new List<string> { e.Message },
-                Message = e.Message,
-                Data = new()
-            };
+           var result = new BaseListResult<T>
+           {
+               Succeeded = false,
+               Errors = new List<string>
+               {
+                   e.Message
+               },
+               Message = e.Message,
+               Data = new(),
+               TotalCount = 0,
+               CurrentPage = 0,
+               PageSize = 0,
+               SortBy = null
+           };
             return result;
         }
     }
@@ -66,22 +118,29 @@ public class BaseService<T, Tkey, TContext>(TContext context)
 
     public virtual async Task<BaseResult> Delete(Tkey id)
     {
-        var entity = await context.Set<T>().FindAsync(id);
-        entity.IsDeleted = true;
+        var entity = await context.Set<T>().FirstOrDefaultAsync(x => x.Id.Equals(id));
         if (entity == null)
         {
             return new BaseResult { Succeeded = false, Errors = ["Entity not found"] };
         }
+        entity.IsDeleted = true;
         await context.SaveChangesAsync();
         return new BaseResult { Succeeded = true, Errors = ["Entity deleted"], Message = "Entity deleted" };
     }
 
-    public async Task<BaseResult> Delete(List<Tkey> id)
+    public async Task<BaseResult> Delete(List<Tkey> ids)
     {
-        var entities = await context.Set<T>().Where(x => id.Contains(x.Id)).ToListAsync();
-        entities.ForEach(x => x.IsDeleted = true);
-        await context.SaveChangesAsync();
-        return new BaseResult { Succeeded = true, Errors = ["Entities deleted"], Message = $"{id.Count} deleted" };
+        try
+        {
+            var entities = await context.Set<T>().Where(x => ids.Contains(x.Id)).ToListAsync();
+            entities.ForEach(x => x.IsDeleted = true);
+            await context.SaveChangesAsync();
+            return new BaseResult { Succeeded = true, Errors = ["Entities deleted"], Message = $"{ids.Count} deleted" };
+        }
+        catch (Exception e)
+        {
+            return new BaseResult { Succeeded = false, Errors = [e.Message], Message = e.Message };
+        }
     }
 
     public async Task<BaseResult> Delete(List<SelectableModel<T>> selectableModels)
@@ -113,3 +172,10 @@ public abstract class BaseService<T, TNew, Tkey, TContext>(TContext context) :
 {
     public abstract Task<BaseResult<T>> Create(TNew dto);
 }
+
+public class BaseService<T, TKey>(DbContext context) : BaseService<T, TKey, DbContext>(context)
+    where T : class, IHasKey<TKey>, ISearchable, new()
+    where TKey : IEquatable<TKey>;
+    
+public class BaseService<T>(DbContext context) : BaseService<T, int, DbContext>(context)
+    where T : class, IHasKey<int>, ISearchable, new();

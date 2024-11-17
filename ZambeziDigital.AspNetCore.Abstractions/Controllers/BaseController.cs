@@ -2,7 +2,6 @@ global using ZambeziDigital.Base.Contracts.Base;
 
 namespace ZambeziDigital.AspNetCore.Abstractions.Controllers;
 
-
 public interface IBaseControllerBase<T, TKey> 
     where T : class, IHasKey<TKey>, new() 
     where TKey : IEquatable<TKey>
@@ -14,11 +13,11 @@ public interface IBaseControllerBase<T, TKey>
     [HttpGet("{id}")]
     Task<ActionResult<BaseResult<T>>> Get(TKey id);
     [HttpGet]
-    Task<ActionResult<BaseResult<List<T>>>> Get(int? pageNumber = null, int? pageSize = null);
+    Task<ActionResult<BaseListResult<T>>> Get(int? pageNumber = null, int? pageSize = null, string? sortBy = null, bool reversed = false);
 
     [HttpGet("Search")]
-    Task<ActionResult<BaseResult<List<T>>>> Search(string query, bool paged = false, int page = 0, int pageSize = 10,
-        bool cached = false);
+    Task<ActionResult<BaseListResult<T>>> Search(string query, bool paged = false, int page = 0, int pageSize = 10,
+        bool cached = false, string? sortBy = null, bool reversed = false);
 }
 
 

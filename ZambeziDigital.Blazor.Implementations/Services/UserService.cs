@@ -396,12 +396,24 @@ public class BaseUserService(IHttpClientFactory httpClientFactory, NavigationMan
         return user ?? throw new Exception("No objects were found");
     }
 
-    public Task<BaseResult<List<BaseApplicationUser>>> Get(bool paged = false, int page = 0, int pageSize = 10, bool cached = false)
+    public Task<BaseListResult<BaseApplicationUser>> Get(bool paged = false, int page = 0, int pageSize = 10, bool cached = false)
     {
         throw new NotImplementedException();
     }
 
-    public Task<BaseResult<List<BaseApplicationUser>>> Search(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false)
+    public Task<BaseListResult<BaseApplicationUser>> Search(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<BaseListResult<BaseApplicationUser>> Get(bool paged = false, int page = 0, int pageSize = 10, bool cached = false, string? sortBy = null,
+        bool reversed = false)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<BaseListResult<BaseApplicationUser>> Search(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false,
+        string? sortBy = null, bool reversed = false)
     {
         throw new NotImplementedException();
     }

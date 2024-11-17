@@ -10,7 +10,7 @@
         <PackageIcon>logo.png</PackageIcon>
         <Company>Zambezi Digital</Company>
         <Authors>Ittai Tumelo, Zimba Isaac</Authors>
-        <Version>8.3.3</Version>
+        <Version>8.4.1</Version>
     </PropertyGroup>
     
     <ItemGroup>

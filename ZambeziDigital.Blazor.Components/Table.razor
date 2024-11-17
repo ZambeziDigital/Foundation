@@ -1,0 +1,558 @@
+@typeparam T where T : class, ISearchable, IHasKey<TKey>, new()
+@typeparam TKey where TKey : IEquatable<TKey>
+@using Microsoft.AspNetCore.Components.Forms
+@using ZambeziDigital.Blazor.Components.Models
+@typeparam TService where TService : IBaseService<T, TKey>
+@inject TService Service
+@inject IJSRuntime JsRuntime
+
+<CreateModal T="T" TService="TService" TKey="TKey" />
+
+<!-- Card -->
+      <div class="card">
+        <!-- Header -->
+        <div class="card-header card-header-content-md-between">
+          <div class="mb-2 mb-md-0">
+            <EditForm Model="SearchString" OnSubmit="Search">
+              <!-- Search -->
+              <div class="input-group input-group-merge input-group-flush">
+                <div class="input-group-prepend input-group-text">
+                  <i class="bi-search"></i>
+                </div>
+                <input id="datatableSearch" type="search" placeholder="Search @className" aria-label="Search users"
+                       @bind="@SearchString" class="form-control">
+              </div>
+              <!-- End Search -->
+            </EditForm>
+          </div>
+
+          <div class="d-grid d-sm-flex justify-content-md-end align-items-sm-center gap-2">
+            <!-- Datatable Info -->
+            <div id="datatableCounterInfo" style="@deleteStyle">
+              <div class="d-flex align-items-center">
+                <span class="fs-5 me-3">
+                  <span id="datatableCounter">@selectedCount</span>
+                  Selected
+                </span>
+                <a class="btn btn-outline-danger btn-sm">
+                  <i class="bi-trash"></i> Delete
+                </a>
+              </div>
+            </div>
+            <!-- End Datatable Info -->
+            @if (isLoading)
+            {
+              <div class="p-2">
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            }
+
+            <!-- Dropdown -->
+            <div class="dropdown">
+              <button type="button" class="btn btn-white btn-sm w-100" id="showHideDropdown" data-bs-toggle="dropdown"
+                      aria-expanded="false" data-bs-auto-close="outside">
+                <i class="bi-table me-1"></i> Columns <span class="badge bg-soft-dark text-dark rounded-circle ms-1">@SelectedProperties.Count(x=>x.Selected)</span>
+              </button>
+
+              <div class="dropdown-menu dropdown-menu-end dropdown-card" aria-labelledby="showHideDropdown"
+                   style="width: 15rem;">
+                <div class="card card-sm">
+                  <div class="card-body">
+                    <div class="d-grid gap-3">
+                      @foreach (var selectableProperty in SelectedProperties)
+                      {
+                        <!-- Form Switch -->
+                        <label class="row form-check form-switch" for="toggleColumn_order">
+                          <span class="col-8 col-sm-9 ms-0">
+                            <span class="me-2">@selectableProperty.Object.PropertyName</span>
+                          </span>
+                          <span class="col-4 col-sm-3 text-end">
+                            <input type="checkbox" class="form-check-input" id="toggleColumn_order" @bind="selectableProperty.Selected">
+                          </span>
+                        </label>
+                        <!-- End Form Switch -->
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Dropdown -->
+            <!-- Dropdown -->
+            <div class="dropdown">
+              <button type="button" class="btn btn-white btn-sm w-100" id="usersExportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi-download me-2"></i> Export
+              </button>
+
+              <div class="dropdown-menu dropdown-menu-sm-end" aria-labelledby="usersExportDropdown">
+                <span class="dropdown-header">Options</span>
+                @* <a id="export-copy" class="dropdown-item" href="javascript:;"> *@
+                @*   <img class="avatar avatar-xss avatar-4x3 me-2" src="./assets/svg/illustrations/copy-icon.svg" alt="Image Description"> *@
+                @*   Copy *@
+                @* </a> *@
+                @* <a id="export-print" class="dropdown-item" href="javascript:;"> *@
+                @*   <img class="avatar avatar-xss avatar-4x3 me-2" src="./assets/svg/illustrations/print-icon.svg" alt="Image Description"> *@
+                @*   Print *@
+                @* </a> *@
+                <div class="dropdown-divider"></div>
+                <span class="dropdown-header">Download options</span>
+                <a id="export-excel" class="dropdown-item" @onclick="ExportListToExcelAsync">
+                  <img class="avatar avatar-xss avatar-4x3 me-2" src="./assets/svg/brands/excel-icon.svg" alt="Image Description">
+                  Excel
+                </a>
+                @* <a id="export-csv" class="dropdown-item" href="javascript:;"> *@
+                @*   <img class="avatar avatar-xss avatar-4x3 me-2" src="./assets/svg/components/placeholder-csv-format.svg" alt="Image Description"> *@
+                @*   .CSV *@
+                @* </a> *@
+                @* <a id="export-pdf" class="dropdown-item" href="javascript:;"> *@
+                @*   <img class="avatar avatar-xss avatar-4x3 me-2" src="./assets/svg/brands/pdf-icon.svg" alt="Image Description"> *@
+                @*   PDF *@
+                @* </a> *@
+              </div>
+            </div>
+            <!-- End Dropdown -->
+
+            @if (CanCreate)
+            {
+              if (AddMenus == null)
+              {
+                <!-- End Dropdown -->
+                <button class="btn btn-white" type="button" data-bs-toggle="modal" data-bs-target="#genericCreate">
+                  <i class="bi-plus me-1"></i> Add
+                </button>
+              }
+              else if (AddMenus.Count == 1)
+              {
+                <button class="btn btn-white" type="button" data-bs-toggle="modal" data-bs-target="#@AddMenus.First().Route">
+                  <i class="bi-plus me-1"></i> Add
+                </button>
+              }
+              else
+              {
+                foreach (var addMenu in AddMenus)
+                {
+                  <button class="btn btn-white" type="button" data-bs-toggle="modal" data-bs-target="#@addMenu.Route">
+                    <i class="@addMenu.Icon me-1"></i> @addMenu.Name
+                  </button>
+                }
+              }
+            }
+            
+          </div>
+        </div>
+        <!-- End Header -->
+
+        <!-- Table -->
+        <div class="table-responsive datatable-custom position-relative">
+          <table id="datatable" class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
+            <thead class="thead-light">
+              <tr>
+                <th class="table-column-pe-0">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox"  @bind="selectAll" @onclick="SelectAll" id="datatableCheckAll">
+                    <label class="form-check-label" for="datatableCheckAll"></label>
+                  </div>
+                </th>
+                @foreach (var property in Properties)
+                {
+                  <th class="table-column-ps-0">@property.Name</th>
+                }
+                
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+            @foreach (var selectableModel in SelectableModels ?? new())
+            {
+              var item = selectableModel.Object ?? throw new("SelectableModel.Object is null");
+              <tr>
+                <td class="table-column-pe-0">
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="ordersCheck1" @bind="selectableModel.Selected">
+                    <label class="form-check-label" for="ordersCheck1"></label>
+                  </div>
+                </td>
+                @foreach (var property in Properties)
+                {
+                  <td class="table-column-ps-0">
+                    @item.GetType().GetProperty(property.PropertyName)?.GetValue(item)
+                  </td>
+                }
+                <td>
+                  <div class="btn-group" role="group">
+                    <a class="btn btn-white btn-sm" @onclick="async() => await OpenDetails(item)">
+                      <i class=" bi-eye-fill me-1"></i> View
+                    </a>
+
+                    <!-- Button Group -->
+                    <div class="btn-group">
+                      <a type="button" class="btn btn-white btn-icon btn-sm" id="productsEditDropdown1"
+                         data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots-vertical"></i>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-end mt-1" aria-labelledby="productsEditDropdown1">
+                        <a class="dropdown-item" href="#">
+                          <i class="bi-pencil-fill dropdown-item-icon"></i> Edit
+                        </a> 
+                        <a class="dropdown-item" href="#">
+                          <i class="bi-trash dropdown-item-icon"></i> Delete
+                        </a>
+                        @foreach (var option in MenuOptions )
+                        {
+                          @if(option.OnClick != null)
+                          {
+                            <a class="dropdown-item" @onclick="async()=> await option.OnClick.Invoke(item)">
+                              <i class="@option.Icon dropdown-item-icon"></i> @option.Name
+                            </a>
+                          }
+                          else
+                          {
+                            <a class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#@option.Route" >
+                              <i class="@option.Icon dropdown-item-icon"></i> @option.Name
+                            </a>
+                          }
+                        }
+                        @* <a class="dropdown-item" href="#"> *@
+                        @*   <i class="bi-upload dropdown-item-icon"></i> Publish *@
+                        @* </a> *@
+                        @* <a class="dropdown-item" href="#"> *@
+                        @*   <i class="bi-x-lg dropdown-item-icon"></i> Unpublish *@
+                        @* </a> *@
+                      </div>
+                    </div>
+                    <!-- End Button Group -->
+                  </div>
+                </td>
+
+              </tr>
+            }
+
+
+
+            </tbody>
+          </table>
+        </div>
+        <!-- End Table -->
+
+        <!-- Footer -->
+        <div class="card-footer">
+          <!-- Pagination -->
+          <div class="row justify-content-center justify-content-sm-between align-items-sm-center">
+            <div class="col-sm mb-2 mb-sm-0">
+              <div class="d-flex justify-content-center justify-content-sm-start align-items-center">
+                <span class="me-2">Showing:</span>
+        
+                <!-- Select -->
+                <div class="tom-select-custom">
+                  <select id="datatableEntries" class="js-select form-select form-select-borderless w-auto" @bind="ListData.PageSize">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50" >50</option>
+                    <option value="100">100</option>
+                  </select>
+                </div>
+                <!-- End Select -->
+        
+                <span class="text-secondary me-2">of</span>
+                @ListData.TotalCount
+                <!-- Pagination Quantity -->
+                <span id="datatableWithPaginationInfoTotalQty"></span>
+              </div>
+            </div>
+            <!-- End Col -->
+        
+            <div class="col-sm-auto">
+              <div class="d-flex justify-content-center justify-content-sm-end">
+                <nav id="datatablePagination" aria-label="Activity pagination">
+                  <div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
+                    <ul id="datatable_pagination" class="pagination datatable-custom-pagination">
+                      @if(!ListData.IsFirstPage)
+                      {
+                        <li class="paginate_item page-item">
+                          <a class="paginate_button previous page-link" aria-controls="datatable" data-dt-idx="0" tabindex="0" id="datatable_previous" @onclick="PreviousPage">
+                            <span aria-hidden="true">Prev</span>
+                          </a>
+                        </li>
+                      }
+                      @foreach (var page in PageNumbers)
+                      {
+                      if(page == ListData.CurrentPage)
+                      {
+                      <li class="paginate_item page-item active">
+                        <a class="paginate_button page-link" aria-controls="datatable" data-dt-idx="1" tabindex="0">@((page + 1).ToString())</a>
+                      </li>
+                      }
+                      else
+                      {
+                      <li class="paginate_item page-item" @onclick="() => { ListData.CurrentPage = page; StateHasChanged();_ = Select(); }">
+                        <a class="paginate_button page-link" aria-controls="datatable" data-dt-idx="1" tabindex="0">@((page + 1).ToString())</a>
+                      </li>
+                      }
+                      }
+                      @if(!ListData.IsLastPage)
+                      {
+                        <li class="paginate_item page-item">
+                          <a class="paginate_button next page-link" aria-controls="datatable" data-dt-idx="4" tabindex="0" id="datatable_next" @onclick="NextPage">
+                            <span aria-hidden="true">Next</span>
+                          </a>
+                        </li>
+                      }
+                    </ul>
+                  </div>
+                </nav>
+              </div>
+            </div>
+            <!-- End Col -->
+          </div>
+          <!-- End Pagination -->
+        </div>
+        <!-- End Footer -->
+      </div>
+      <!-- End Card -->
+      
+      
+      
+
+  
+  
+      @code {
+        private T Property { get; set; } = new();
+        [Parameter] public List<T> Items { get; set; } = new();
+        private List<SelectableModel<T>>? SelectableModels { get; set; } = new();
+        List<DigitalProperty> Properties => SelectedProperties.Where(x => x.Selected).Select(x => x.Object).ToList();
+        readonly string className = typeof(T).Name;
+
+        private BaseListResult<T> ListData { get; set; } = new BaseListResult<T>
+        {
+          TotalCount = 0,
+          CurrentPage = 0,
+          PageSize = 0,
+          SortBy = null
+        };
+
+
+        protected override async Task OnInitializedAsync()
+        {
+          SelectedProperties = GetProperties(Property).Select(x => new SelectableModel<DigitalProperty> { Object = x, Selected = false }).ToList();
+          var result = await Service.Get(true);
+          ListData = result;
+          SelectableModels = ListData.Data?.Select(x => new SelectableModel<T> { Object = x, Selected = false }).ToList() ?? new List<SelectableModel<T>>();
+          //turn on 7
+          int i = 0;
+          foreach (var item in SelectedProperties)
+          {
+            item.Selected = true;
+            i++;
+            if (i == 7)
+            {
+              break;
+            }
+          }
+
+          isLoading = false;
+          StateHasChanged();
+        }
+
+
+        private async Task Search()
+        {
+          SelectableModels = Items.Select(x => new SelectableModel<T> { Object = x, Selected = false }).ToList();
+          StateHasChanged();
+          await Task.Delay(0);
+        }
+
+@code{
+
+
+
+
+
+  async Task NextPage()
+  {
+    isLoading = true;
+    StateHasChanged();
+    ListData.CurrentPage = ListData.CurrentPage < PageNumbers.Count ? (ListData.CurrentPage + 1) : ListData.CurrentPage;
+    ListData = string.IsNullOrEmpty(SearchString) ? await Service.Get(true, ListData.CurrentPage, ListData.PageSize) : await Service.Search(SearchString, true);
+    SelectableModels = ListData.Data?.Select(x => new SelectableModel<T> { Object = x, Selected = false }).ToList() ?? new List<SelectableModel<T>>();
+    // InitializeList();
+    isLoading = false;
+    StateHasChanged();
+  }
+
+  async Task Select()
+  {
+    isLoading = true;
+    StateHasChanged();
+    ListData.CurrentPage = ListData.CurrentPage < PageNumbers.Count ? (ListData.CurrentPage) : ListData.CurrentPage;
+    ListData = string.IsNullOrEmpty(SearchString) ? await Service.Get(true, ListData.CurrentPage, ListData.PageSize) : await Service.Search(SearchString, true);
+    SelectableModels = ListData.Data?.Select(x => new SelectableModel<T> { Object = x, Selected = false }).ToList();
+    isLoading = false;
+    StateHasChanged();
+  }
+
+  async Task PreviousPage()
+  {
+    isLoading = true;
+    StateHasChanged();
+    ListData.CurrentPage = ListData.CurrentPage > 0 ? (ListData.CurrentPage - 1) : ListData.CurrentPage;
+    ListData = string.IsNullOrEmpty(SearchString) ? (await Service.Get(true, ListData.CurrentPage, ListData.PageSize)) : (await Service.Search(SearchString, true));
+    SelectableModels = ListData.Data?.Select(x => new SelectableModel<T> { Object = x, Selected = false }).ToList() ?? new List<SelectableModel<T>>();
+    isLoading = false;
+    StateHasChanged();
+  }
+
+  List<int> PageNumbers
+  {
+    get
+    {
+      var result = new List<int>
+      {
+        // Always add the first page
+        0,
+        ListData.CurrentPage
+      };
+
+      // Add the page before the current page if it's not the first page
+      if (ListData.CurrentPage > 0)
+      {
+        result.Add(ListData.CurrentPage - 1);
+      }
+
+      // Add the current page if it's not the first or last page
+      if (ListData.CurrentPage > 0 && ListData.CurrentPage < ListData.TotalPages - 1)
+      {
+        result.Add(ListData.CurrentPage);
+      }
+
+      // Add the page after the current page if it's not the last page
+      if (ListData.CurrentPage < ListData.TotalPages - 2)
+      {
+        result.Add(ListData.CurrentPage + 1);
+      }
+
+      // Always add the last page if it's not the first page
+      if (ListData.TotalPages > 1)
+      {
+        result.Add(ListData.TotalPages - 1);
+      }
+
+      // Ensure the list is unique and sorted
+      result = result.Distinct().OrderBy(x => x).ToList();
+
+      return result;
+    }
+  }
+
+}
+
+@code {
+
+
+
+  private string SearchString { get; set; } = "";
+  [Parameter] public string AddModalName { get; set; } = "";
+  [Parameter] public EventCallback<T> OnOpenDetails { get; set; }
+  // [CascadingParameter] public EventCallback<TDocument> ConvertToInvoice { get; set; }
+
+  [Parameter] public bool CanCreate { get; set; } = true;
+  [Parameter] public List<MenuOption<T>> MenuOptions { get; set; } = new();
+  [Parameter] public List<MenuOption<T>>? AddMenus { get; set; }
+
+  public string CustomerSearchCardStyle = "d-none";
+
+
+
+
+
+
+  bool isLoading = true;
+
+  private object deleteStyle = "display:none";
+  [Parameter] public string DocumentType { get; set; } = string.Empty;
+  public string ModalName => $"generate{DocumentType.Replace(" ", "")}";
+
+  public string ModalId => $"{DocumentType.Replace(" ", "")}Details";
+
+
+  private async Task OpenDetails(T item)
+  {
+    StateHasChanged();
+    StateHasChanged();
+    if (OnOpenDetails.HasDelegate)
+    {
+      await OnOpenDetails.InvokeAsync(item);
+    }
+    else
+      await JsRuntime.InvokeVoidAsync("openModal", AddModalName);
+  }
+
+  // async Task Refresh()
+  // {
+  //   isLoading = true;
+  //   StateHasChanged();
+  //   await Service.Get();
+  //   isLoading = false;
+  //   StateHasChanged();
+  // }
+
+
+
+  bool selectAll;
+
+  async Task SelectAll()
+  {
+    if (!selectAll)
+    {
+      if (SelectableModels != null)
+        foreach (var document in SelectableModels)
+        {
+          document.Selected = true;
+        }
+    }
+    else
+    {
+      if (SelectableModels != null)
+        foreach (var document in SelectableModels)
+        {
+          document.Selected = false;
+        }
+    }
+
+    StateHasChanged();
+    await ActivateHidden();
+  }
+
+  int selectedCount;
+
+  private async Task ExportListToExcelAsync()
+  {
+    if (SelectableModels != null)
+    {
+      var list = SelectableModels.Where(x => x.Selected).Select(x => x.Object).ToList();
+
+      await JsRuntime.InvokeVoidAsync("exportListToExcel", list, "list.xlsx");
+    }
+  }
+
+  private async Task ActivateHidden()
+  {
+    await Task.Delay(0);
+    if (SelectableModels != null)
+    {
+      var selected = SelectableModels.Where(x => x.Selected).ToList();
+      deleteStyle = selected.Count > 0 ? "" : "display:none";
+
+      selectedCount = selected.Count;
+    }
+
+    StateHasChanged();
+  }
+
+}
+
+  List<SelectableModel<DigitalProperty>> SelectedProperties { get; set; } = new();
+      }}

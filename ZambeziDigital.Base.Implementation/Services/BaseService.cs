@@ -11,24 +11,7 @@ public class BaseService<T, TKey>(IServiceScopeFactory serviceScopeFactory) : IB
     where TKey : IEquatable<TKey>
 {
     public List<T> Objects { get; set; } = new();
-    // public virtual async Task<List<T>> Get(bool forceRefresh = false)
-    // {
-    //     try
-    //     {
-    //         if(Objects.Count > 0 && !forceRefresh) return Objects;
-    //         var httpClient = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("Auth");
-    //         var controller = typeof(T).Name;
-    //         var request = await httpClient.GetAsync($"api/{controller}");
-    //         if (!request.IsSuccessStatusCode) throw new Exception(request.ReasonPhrase);
-    //         var objects = await request.Content.ReadFromJsonAsync<BaseResult<List<T>>>();
-    //         Objects = objects.Object ?? throw new Exception("No objects were found");
-    //         return  Objects;
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         throw new Exception(e.Message);
-    //     }
-    // }
+
 
     public virtual async Task<BaseResult<T>> Get(TKey id, bool cached = false)
     {
@@ -66,14 +49,18 @@ public class BaseService<T, TKey>(IServiceScopeFactory serviceScopeFactory) : IB
     }
 
 
-    public virtual async Task<BaseResult<List<T>>> Get(bool paged = false, int page = 0, int pageSize = 10, bool cached = false)
+    public virtual async Task<BaseListResult<T>> Get(bool paged = false, int page = 0, int pageSize = 10, bool cached = false, string? sortBy = null, bool reversed = false)
     {
         try
         {
-            if (Objects is not null && Objects.Count > 0 && cached) return new BaseResult<List<T>>()
+            if (Objects is not null && Objects.Count > 0 && cached) return new BaseListResult<T>
             {
                 Succeeded = true,
-                Data = Objects
+                Data = Objects,
+                TotalCount = 0,
+                CurrentPage = 0,
+                PageSize = 0,
+                SortBy = null
             };
             var httpClient = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("Auth");
             var controller = typeof(T).Name;
@@ -83,55 +70,61 @@ public class BaseService<T, TKey>(IServiceScopeFactory serviceScopeFactory) : IB
             else
                 request = await httpClient.GetAsync($"api/{controller}");
             if (!request.IsSuccessStatusCode) throw new Exception(request.ReasonPhrase);
-            var objects = await request.Content.ReadFromJsonAsync<BaseResult<List<T>>>();
+            var objects = await request.Content.ReadFromJsonAsync<BaseListResult<T>>();
             if (paged)
                 Objects.AddRange(objects?.Data ?? throw new Exception("failed to add incoming list of objects to existing list"));
             else
                 Objects = objects.Data ?? throw new Exception("No objects were found");
-            return new BaseResult<List<T>>()
-            {
-                Succeeded = true,
-                Data = Objects
-            };
+            return objects;
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             return
-                new BaseResult<List<T>>()
+                new BaseListResult<T>
                 {
                     Succeeded = false,
-                    Errors = new List<string>() { e.Message },
+                    Errors = new List<string>()
+                    {
+                        e.Message
+                    },
                     Message = e.Message,
-                    Data = null
+                    Data = null,
+                    TotalCount = 0,
+                    CurrentPage = 0,
+                    PageSize = 0,
+                    SortBy = null
                 };
         }
     }
 
-    public virtual async Task<BaseResult<List<T>>> Search(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false)
+    public virtual async Task<BaseListResult<T>> Search(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false, string? sortBy = null, bool reversed = false)
     {
         try
         {
             var httpClient = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("Auth");
             var request = await httpClient.GetAsync($"api/{typeof(T).Name}/search?query={query}");
             if (!request.IsSuccessStatusCode) throw new Exception(request.ReasonPhrase);
-            var objects = await request.Content.ReadFromJsonAsync<BaseResult<List<T>>>();
+            var objects = await request.Content.ReadFromJsonAsync<BaseListResult<T>>();
             // Objects = objects.Data ?? throw new Exception("No objects were found");
-            return new BaseResult<List<T>>()
-            {
-                Succeeded = true,
-                Data = Objects
-            };
+            return objects;
         }
         catch (Exception e)
         {
             return
-                new BaseResult<List<T>>()
+                new BaseListResult<T>
                 {
                     Succeeded = false,
-                    Errors = new List<string>() { e.Message },
+                    Errors = new List<string>()
+                    {
+                        e.Message
+                    },
                     Message = e.Message,
-                    Data = null
+                    Data = null,
+                    TotalCount = 0,
+                    CurrentPage = 0,
+                    PageSize = 0,
+                    SortBy = null
                 };
         }
     }
@@ -194,7 +187,7 @@ public class BaseService<T, TKey>(IServiceScopeFactory serviceScopeFactory) : IB
         try
         {
             var httpClient = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("Auth");
-            var request = await httpClient.PostAsJsonAsync($"api/{typeof(T).Name}/delete/Multiple", id);
+            var request = await httpClient.PostAsJsonAsync($"api/{typeof(T).Name}/Multiple", id);
             if (!request.IsSuccessStatusCode) throw new Exception(request.ReasonPhrase);
             return new BaseResult()
             {

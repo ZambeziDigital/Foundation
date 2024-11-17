@@ -63,19 +63,16 @@ public class BaseController<T, TKey>(IBaseService<T, TKey> service) :
     [HttpDelete("{id}")]
     [SwaggerOperation(
         Summary = $"Delete",
-        Description = "Delete entity by Id", Tags = new[] { "Delete" }
+        Description = "Delete entity by Id"
         )]
     public virtual async Task<ActionResult<BaseResult>> Delete(TKey id)
     {
         try
         {
             Log.Information("Deleting entity with id {@id}", id);
-            await service.Delete(id);
+            return await service.Delete(id);
             Log.Information("Entity with id {@id} deleted", id);
-            return new BaseResult()
-            {
-                Succeeded = true,
-            };
+           
         }
         catch (Exception e)
         {
@@ -105,12 +102,9 @@ public class BaseController<T, TKey>(IBaseService<T, TKey> service) :
         try
         {
             Log.Information("Deleting entity with id {@id}", id);
-            await service.Delete(id);
+            return await service.Delete(id);
             Log.Information("Entity with id {@id} deleted", id);
-            return new BaseResult()
-            {
-                Succeeded = true,
-            };
+            
         }
         catch (Exception e)
         {
@@ -171,9 +165,9 @@ public class BaseController<T, TKey>(IBaseService<T, TKey> service) :
         Summary = "Get all",
         Description = "Get"
         )]
-    public virtual async Task<ActionResult<BaseResult<List<T>>>> Get(int? pageNumber = null, int? pageSize = null)
+    public virtual async Task<ActionResult<BaseListResult<T>>> Get(int? pageNumber = null, int? pageSize = null, string? sortBy = null, bool reversed = false)
     {
-        return await service.Get(pageNumber is not null, pageNumber ?? 0, pageSize ?? 10);
+        return await service.Get(pageNumber is not null, pageNumber ?? 0, pageSize ?? 10, false,  sortBy, reversed);
     }
     
     /// <summary>
@@ -190,9 +184,9 @@ public class BaseController<T, TKey>(IBaseService<T, TKey> service) :
         Summary = "Search",
         Description = "Search for entities by SearchString"
         )]
-    public virtual async Task<ActionResult<BaseResult<List<T>>>> Search(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false)
+    public virtual async Task<ActionResult<BaseListResult<T>>> Search(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false, string? sortBy = null, bool reversed = false)
     {
-        return await service.Search(query, paged, page, pageSize, cached);
+        return await service.Search(query, paged, page, pageSize, cached, sortBy, reversed);
     }
 }
 
@@ -257,16 +251,17 @@ public class BaseController<T, TNew, TKey>(IBaseService<T, TKey> service) : Cont
 
     }
     [HttpGet]
-    public virtual async Task<ActionResult<BaseResult<List<T>>>> Get(int? pageNumber = null, int? pageSize = null)
+    public virtual async Task<ActionResult<BaseListResult<T>>> Get(int? pageNumber = null, int? pageSize = null, string? sortBy = null, bool reversed = false)
     {
-        return await service.Get(pageNumber is not null, pageNumber ?? 0, pageSize ?? 10);
+        return await service.Get(pageNumber is not null, pageNumber ?? 0, pageSize ?? 10, false, sortBy, reversed);
     }
 
     [HttpGet("Search")]
-    public virtual async Task<ActionResult<BaseResult<List<T>>>> Search(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false)
+    public virtual async Task<ActionResult<BaseListResult<T>>> Search(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false, string? sortBy = null, bool reversed = false)
     {
-        return await service.Search(query, paged, page, pageSize, cached);
+        return await service.Search(query, paged, page, pageSize, cached, sortBy, reversed);
     }
+
 
     [HttpPost("Create")]
     public async Task<ActionResult<BaseResult<T>>> Create(TNew entity)
