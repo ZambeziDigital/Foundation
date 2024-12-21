@@ -19,8 +19,9 @@
                 <div class="input-group-prepend input-group-text">
                   <i class="bi-search"></i>
                 </div>
-                <input id="datatableSearch" type="search" placeholder="Search @className" aria-label="Search users"
-                       @bind="@SearchString" class="form-control">
+                <input id="datatableSearch"  type="search" placeholder="Search @className" aria-label="Search @className"
+                       @bind="@SearchString" class="form-control" 
+                       >
               </div>
               <!-- End Search -->
             </EditForm>
@@ -125,17 +126,35 @@
               }
               else if (AddMenus.Count == 1)
               {
-                <button class="btn btn-white" type="button" data-bs-toggle="modal" data-bs-target="#@AddMenus.First().Route">
-                  <i class="bi-plus me-1"></i> Add
-                </button>
+                if (!AddMenus.First().Navigate)
+                {
+                  <button class="btn btn-white" type="button" data-bs-toggle="modal" data-bs-target="#@AddMenus.First().Route">
+                    <i class="bi-plus me-1"></i> Add
+                  </button>
+                }
+                else
+                {
+                  <a class="btn btn-white" href="@AddMenus.First().Route">
+                    <i class="bi-plus me-1"></i> Add
+                  </a>
+                }
               }
               else
               {
                 foreach (var addMenu in AddMenus)
                 {
-                  <button class="btn btn-white" type="button" data-bs-toggle="modal" data-bs-target="#@addMenu.Route">
-                    <i class="@addMenu.Icon me-1"></i> @addMenu.Name
-                  </button>
+                  if (!addMenu.Navigate)
+                  {
+                    <button class="btn btn-white" type="button" data-bs-toggle="modal" data-bs-target="#@addMenu.Route">
+                      <i class="@addMenu.Icon me-1"></i> @addMenu.Name
+                    </button>
+                  }
+                  else
+                  {
+                    <a class="btn btn-white" href="@addMenu.Route">
+                      <i class="bi-plus me-1"></i> Add
+                    </a>
+                  }
                 }
               }
             }
@@ -160,7 +179,7 @@
                   <th class="table-column-ps-0">@property.Name</th>
                 }
                 
-                <th>Action</th>
+                <th class="text-ends">Action</th>
               </tr>
             </thead>
 
@@ -181,7 +200,7 @@
                     @item.GetType().GetProperty(property.PropertyName)?.GetValue(item)
                   </td>
                 }
-                <td>
+                <td class="d-flex justify-content-end align-items-center">
                   <div class="btn-group" role="group">
                     <a class="btn btn-white btn-sm" @onclick="async() => await OpenDetails(item)">
                       <i class=" bi-eye-fill me-1"></i> View
@@ -244,18 +263,24 @@
             <div class="col-sm mb-2 mb-sm-0">
               <div class="d-flex justify-content-center justify-content-sm-start align-items-center">
                 <span class="me-2">Showing:</span>
-        
-                <!-- Select -->
-                <div class="tom-select-custom">
-                  <select id="datatableEntries" class="js-select form-select form-select-borderless w-auto" @bind="ListData.PageSize">
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="50" >50</option>
-                    <option value="100">100</option>
-                  </select>
-                </div>
-                <!-- End Select -->
+                @if (PageSize != null)
+                {
+                  <span class="text-secondary me-2">@PageSize</span>
+                }
+                else
+                {
+                  <!-- Select -->
+                  <div class="tom-select-custom">
+                    <select id="datatableEntries" class="js-select form-select form-select-borderless w-auto" @bind="ListData.PageSize">
+                      <option value="5">5</option>
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                      <option value="50" >50</option>
+                      <option value="100">100</option>
+                    </select>
+                  </div>
+                  <!-- End Select -->
+                }
         
                 <span class="text-secondary me-2">of</span>
                 @ListData.TotalCount
@@ -338,7 +363,7 @@
         protected override async Task OnInitializedAsync()
         {
           SelectedProperties = GetProperties(Property).Select(x => new SelectableModel<DigitalProperty> { Object = x, Selected = false }).ToList();
-          var result = await Service.Get(true);
+          var result = await Service.Get(true, pageSize: PageSize ?? 10);
           ListData = result;
           SelectableModels = ListData.Data?.Select(x => new SelectableModel<T> { Object = x, Selected = false }).ToList() ?? new List<SelectableModel<T>>();
           //turn on 7
@@ -360,9 +385,17 @@
 
         private async Task Search()
         {
-          SelectableModels = Items.Select(x => new SelectableModel<T> { Object = x, Selected = false }).ToList();
+          isLoading = true;
+          if(string.IsNullOrEmpty(SearchString))
+          {
+            await OnInitializedAsync();
+            return;
+          }
+          var result = await Service.Search(SearchString, true, ListData.CurrentPage, ListData.PageSize, false);
+          ListData = result;
+          SelectableModels = ListData.Data?.Select(x => new SelectableModel<T> { Object = x, Selected = false }).ToList() ?? new List<SelectableModel<T>>();
+          isLoading = false;
           StateHasChanged();
-          await Task.Delay(0);
         }
 
 @code{
@@ -376,9 +409,8 @@
     isLoading = true;
     StateHasChanged();
     ListData.CurrentPage = ListData.CurrentPage < PageNumbers.Count ? (ListData.CurrentPage + 1) : ListData.CurrentPage;
-    ListData = string.IsNullOrEmpty(SearchString) ? await Service.Get(true, ListData.CurrentPage, ListData.PageSize) : await Service.Search(SearchString, true);
+    ListData = string.IsNullOrEmpty(SearchString) ? await Service.Get(true, ListData.CurrentPage, ListData.PageSize) : await Service.Search(SearchString, true, ListData.CurrentPage, ListData.PageSize);
     SelectableModels = ListData.Data?.Select(x => new SelectableModel<T> { Object = x, Selected = false }).ToList() ?? new List<SelectableModel<T>>();
-    // InitializeList();
     isLoading = false;
     StateHasChanged();
   }
@@ -388,7 +420,7 @@
     isLoading = true;
     StateHasChanged();
     ListData.CurrentPage = ListData.CurrentPage < PageNumbers.Count ? (ListData.CurrentPage) : ListData.CurrentPage;
-    ListData = string.IsNullOrEmpty(SearchString) ? await Service.Get(true, ListData.CurrentPage, ListData.PageSize) : await Service.Search(SearchString, true);
+    ListData = string.IsNullOrEmpty(SearchString) ? await Service.Get(true, ListData.CurrentPage, ListData.PageSize) : await Service.Search(SearchString, true, ListData.CurrentPage, ListData.PageSize);
     SelectableModels = ListData.Data?.Select(x => new SelectableModel<T> { Object = x, Selected = false }).ToList();
     isLoading = false;
     StateHasChanged();
@@ -447,9 +479,7 @@
     }
   }
 
-}
 
-@code {
 
 
 
@@ -461,7 +491,8 @@
   [Parameter] public bool CanCreate { get; set; } = true;
   [Parameter] public List<MenuOption<T>> MenuOptions { get; set; } = new();
   [Parameter] public List<MenuOption<T>>? AddMenus { get; set; }
-
+  [Parameter] public EventCallback<BaseListResult<T>> OnGet { get; set; }
+  [Parameter] public int? PageSize { get; set; }
   public string CustomerSearchCardStyle = "d-none";
 
 
@@ -489,15 +520,6 @@
     else
       await JsRuntime.InvokeVoidAsync("openModal", AddModalName);
   }
-
-  // async Task Refresh()
-  // {
-  //   isLoading = true;
-  //   StateHasChanged();
-  //   await Service.Get();
-  //   isLoading = false;
-  //   StateHasChanged();
-  // }
 
 
 
@@ -554,5 +576,5 @@
 
 }
 
-  List<SelectableModel<DigitalProperty>> SelectedProperties { get; set; } = new();
-      }}
+List<SelectableModel<DigitalProperty>> SelectedProperties { get; set; } = new();
+      }

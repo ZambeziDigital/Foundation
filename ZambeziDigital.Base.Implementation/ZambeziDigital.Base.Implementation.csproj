@@ -7,13 +7,14 @@
         <Title>ZambeziDigital.Base.Implementation</Title>
         <Authors>Ittai Tumelo</Authors>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>8.3.2</Version>
+        <Version>8.4.0</Version>
         <PackageIcon>logo.png</PackageIcon>
     </PropertyGroup>
 
     <ItemGroup>
 <!--      <ProjectReference Include="..\ZambeziDigital.Base.Accounting\ZambeziDigital.Base.Accounting.csproj" />-->
       <ProjectReference Include="..\ZambeziDigital.Base\ZambeziDigital.Base.csproj" />
+      <ProjectReference Include="..\ZambeziDigital.Functions\ZambeziDigital.Functions.csproj" />
     </ItemGroup>
 
     <ItemGroup>

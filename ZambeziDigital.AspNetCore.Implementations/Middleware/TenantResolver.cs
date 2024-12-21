@@ -6,13 +6,13 @@ using ZambeziDigital.Base.Implementation.Models;
 
 namespace ZambeziDigital.AspNetCore.Implementations.Middleware;
 
-public class TenantResolver(RequestDelegate next, IServiceScopeFactory serviceScopeFactory)
+public class TenantResolver<TTenant>(RequestDelegate next, IServiceScopeFactory serviceScopeFactory)
 {
     private readonly RequestDelegate _next = next;
 
 
     // Get Company Id from incoming requests 
-    public async Task InvokeAsync(HttpContext context, IBaseCurrentTenantService<BaseApplicationUser> currentTenantService)
+    public async Task InvokeAsync(HttpContext context, IBaseCurrentTenantService<BaseApplicationUser, TTenant> currentTenantService)
     {
       
 

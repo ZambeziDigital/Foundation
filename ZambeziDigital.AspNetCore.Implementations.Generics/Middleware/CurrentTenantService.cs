@@ -9,10 +9,11 @@ using ZambeziDigital.Base.Models.Auth;
 // using ZambeziDigital.AspNetCore.Abstractions.Data;
 
 namespace ZambeziDigital.AspNetCore.Implementations.Generics.Middleware;
-public interface IBaseCurrentTenantService<TUser> where TUser : IApplicationUser
+public interface IBaseCurrentTenantService<TUser, TTenant> where TUser : IApplicationUser
 {
     public string? ConnectionString { get; set; }
     int TenantId { get; set; }
+    TTenant Tenant { get; set; }
     public Task<bool> SetTenant(int tenant);
     Task<bool> SetUser(StringValues userFromHeader); 
     Task<bool> TurnOnKeyedAccess();
@@ -20,7 +21,7 @@ public interface IBaseCurrentTenantService<TUser> where TUser : IApplicationUser
     TUser User { get; set; }
 }
 public class BaseCurrentTenantService<TUser, TBaseContext, TTenant>(IServiceScopeFactory serviceScopeFactory) : 
-    IBaseCurrentTenantService<TUser> 
+    IBaseCurrentTenantService<TUser, TTenant> 
     where TUser : IdentityUser, IApplicationUser, IMustHaveTenant, new()
     where TBaseContext : DbContext, IBaseDbContext<TUser, TTenant>
     where TTenant : class, IHasKey<int>, ITenant
@@ -28,6 +29,7 @@ public class BaseCurrentTenantService<TUser, TBaseContext, TTenant>(IServiceScop
 {
     public string? ConnectionString { get; set; }
     public int TenantId { get; set; }
+    public TTenant Tenant { get; set; }
 
     public async Task<bool> SetTenant(int tenantId)
     {

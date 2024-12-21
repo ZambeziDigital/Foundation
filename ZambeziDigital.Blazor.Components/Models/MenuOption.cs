@@ -10,6 +10,7 @@ public class MenuOption<T> where T : class, new()
     public string? Description { get; set; }
     public List<MenuOption<T>>? SubMenu { get; set; } = new();
     public Func<T, Task>? OnClick { get; set; }
+    public bool Navigate { get; set; } = false;
 }
 
 public class MenuOption : MenuOption<object>;

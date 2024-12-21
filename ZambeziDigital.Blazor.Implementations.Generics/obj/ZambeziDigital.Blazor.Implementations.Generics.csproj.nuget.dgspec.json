@@ -4,72 +4,8 @@
     "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Blazor.Implementations.Generics/ZambeziDigital.Blazor.Implementations.Generics.csproj": {}
   },
   "projects": {
-    "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Base.Accounting/ZambeziDigital.Base.Accounting.csproj": {
-      "version": "8.0.1",
-      "restore": {
-        "projectUniqueName": "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Base.Accounting/ZambeziDigital.Base.Accounting.csproj",
-        "projectName": "ZambeziDigital.Base.Accounting",
-        "projectPath": "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Base.Accounting/ZambeziDigital.Base.Accounting.csproj",
-        "packagesPath": "/Users/ittaitumelo/.nuget/packages/",
-        "outputPath": "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Base.Accounting/obj/",
-        "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "/Users/ittaitumelo/.nuget/NuGet/NuGet.Config"
-        ],
-        "originalTargetFrameworks": [
-          "net8.0"
-        ],
-        "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
-            "projectReferences": {
-              "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Base/ZambeziDigital.Base.csproj": {
-                "projectPath": "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Base/ZambeziDigital.Base.csproj"
-              }
-            }
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        }
-      },
-      "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
-          "dependencies": {
-            "Newtonsoft.Json": {
-              "target": "Package",
-              "version": "[13.0.3, )"
-            }
-          },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.303/PortableRuntimeIdentifierGraph.json"
-        }
-      }
-    },
     "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Base.Implementation/ZambeziDigital.Base.Implementation.csproj": {
-      "version": "8.0.12",
+      "version": "8.4.0",
       "restore": {
         "projectUniqueName": "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Base.Implementation/ZambeziDigital.Base.Implementation.csproj",
         "projectName": "ZambeziDigital.Base.Implementation",
@@ -91,11 +27,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Base.Accounting/ZambeziDigital.Base.Accounting.csproj": {
-                "projectPath": "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Base.Accounting/ZambeziDigital.Base.Accounting.csproj"
-              },
               "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Base/ZambeziDigital.Base.csproj": {
                 "projectPath": "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Base/ZambeziDigital.Base.csproj"
+              },
+              "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Functions/ZambeziDigital.Functions.csproj": {
+                "projectPath": "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Functions/ZambeziDigital.Functions.csproj"
               }
             }
           }
@@ -104,15 +40,25 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "all"
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
             "Microsoft.Extensions.Http": {
               "target": "Package",
-              "version": "[8.0.0, )"
+              "version": "[8.0.1, )"
             }
           },
           "imports": [
@@ -126,17 +72,27 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
     "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Base/ZambeziDigital.Base.csproj": {
-      "version": "8.1.14",
+      "version": "8.5.0",
       "restore": {
         "projectUniqueName": "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Base/ZambeziDigital.Base.csproj",
         "projectName": "ZambeziDigital.Base",
@@ -164,7 +120,13 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "all"
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -172,11 +134,11 @@
           "dependencies": {
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[8.0.10, )"
             },
             "Microsoft.Extensions.Identity.Stores": {
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[8.0.10, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",
@@ -194,17 +156,27 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
     "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Blazor.Implementations.Generics/ZambeziDigital.Blazor.Implementations.Generics.csproj": {
-      "version": "8.0.5",
+      "version": "8.2.0",
       "restore": {
         "projectUniqueName": "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Blazor.Implementations.Generics/ZambeziDigital.Blazor.Implementations.Generics.csproj",
         "projectName": "ZambeziDigital.Blazor.Implementations.Generics",
@@ -242,7 +214,13 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "all"
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -250,19 +228,19 @@
           "dependencies": {
             "Microsoft.AspNetCore.Components": {
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[8.0.10, )"
             },
             "Microsoft.AspNetCore.Components.Authorization": {
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[8.0.10, )"
             },
             "Microsoft.Extensions.DependencyInjection.Abstractions": {
               "target": "Package",
-              "version": "[8.0.1, )"
+              "version": "[8.0.2, )"
             },
             "Microsoft.Extensions.Http": {
               "target": "Package",
-              "version": "[8.0.0, )"
+              "version": "[8.0.1, )"
             }
           },
           "imports": [
@@ -276,17 +254,27 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
     "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Blazor.Implementations/ZambeziDigital.Blazor.Implementations.csproj": {
-      "version": "8.0.3",
+      "version": "8.2.0",
       "restore": {
         "projectUniqueName": "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Blazor.Implementations/ZambeziDigital.Blazor.Implementations.csproj",
         "projectName": "ZambeziDigital.Blazor.Implementations",
@@ -318,7 +306,13 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "all"
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -326,15 +320,15 @@
           "dependencies": {
             "Microsoft.AspNetCore.Components.Authorization": {
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[8.0.10, )"
             },
             "Microsoft.AspNetCore.Components.WebAssembly": {
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[8.0.10, )"
             },
             "Microsoft.Extensions.Http": {
               "target": "Package",
-              "version": "[8.0.0, )"
+              "version": "[8.0.1, )"
             }
           },
           "imports": [
@@ -348,12 +342,92 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Functions/ZambeziDigital.Functions.csproj": {
+      "version": "8.2.2",
+      "restore": {
+        "projectUniqueName": "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Functions/ZambeziDigital.Functions.csproj",
+        "projectName": "ZambeziDigital.Functions",
+        "projectPath": "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Functions/ZambeziDigital.Functions.csproj",
+        "packagesPath": "/Users/ittaitumelo/.nuget/packages/",
+        "outputPath": "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Functions/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/ittaitumelo/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "/usr/local/share/dotnet/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "all"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

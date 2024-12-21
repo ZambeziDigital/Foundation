@@ -22,7 +22,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZambeziDigital.Blazor.Authe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZambeziDigital.Base.Accounting", "ZambeziDigital.Base.Accounting\ZambeziDigital.Base.Accounting.csproj", "{F5853769-9F79-4426-B07A-0858251BA071}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZambeziDigital.Management.Server", "ZambeziDigital.Management.Server\ZambeziDigital.Management.Server.csproj", "{EA6C14FD-294B-41E1-8E36-B18968592B6C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZambeziDigital.Blazor.Components", "ZambeziDigital.Blazor.Components\ZambeziDigital.Blazor.Components.csproj", "{70FD4693-996D-4FD0-9FF0-B42E943E3501}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,9 +74,9 @@ Global
 		{F5853769-9F79-4426-B07A-0858251BA071}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5853769-9F79-4426-B07A-0858251BA071}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5853769-9F79-4426-B07A-0858251BA071}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EA6C14FD-294B-41E1-8E36-B18968592B6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EA6C14FD-294B-41E1-8E36-B18968592B6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EA6C14FD-294B-41E1-8E36-B18968592B6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EA6C14FD-294B-41E1-8E36-B18968592B6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70FD4693-996D-4FD0-9FF0-B42E943E3501}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70FD4693-996D-4FD0-9FF0-B42E943E3501}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70FD4693-996D-4FD0-9FF0-B42E943E3501}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70FD4693-996D-4FD0-9FF0-B42E943E3501}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

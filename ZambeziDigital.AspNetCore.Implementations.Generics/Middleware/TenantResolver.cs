@@ -6,19 +6,14 @@ using ZambeziDigital.Base.Models.Auth;
 
 namespace ZambeziDigital.AspNetCore.Implementations.Generics.Middleware;
 
-public class TenantResolver<TUser, TCurrentTenantService>(RequestDelegate next, IServiceScopeFactory serviceScopeFactory) 
+public class TenantResolver<TUser, TCurrentTenantService, TTenant>(RequestDelegate next, IServiceScopeFactory serviceScopeFactory) 
     where TUser : class, IApplicationUser, IMustHaveTenant
-    where TCurrentTenantService : class, IBaseCurrentTenantService<TUser>
+    where TCurrentTenantService : class, IBaseCurrentTenantService<TUser, TTenant>
 {
     private readonly RequestDelegate _next = next;
-
-
     // Get Company Id from incoming requests 
     public async Task InvokeAsync(HttpContext context, TCurrentTenantService currentTenantService)
     {
-      
-
-
           // Read the tenant ID from the cookie in the incoming request
         int tenantIdFromCookie = 0;
         string userIdFromCookie = string.Empty;

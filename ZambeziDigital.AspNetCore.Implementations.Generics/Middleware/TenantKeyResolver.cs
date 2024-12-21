@@ -7,16 +7,16 @@ using ZambeziDigital.Base.Models.Auth;
 
 namespace ZambeziDigital.AspNetCore.Implementations.Generics.Middleware;
 
-public class TenantKeyResolver<TUser, TApiKey>(RequestDelegate next, IServiceScopeFactory serviceScopeFactory) where TApiKey : class, IAPIKey, IHasKey<int>, new() where TUser : class, IApplicationUser
+public class TenantKeyResolver<TUser, TApiKey, TTenant>(RequestDelegate next, IServiceScopeFactory serviceScopeFactory) where TApiKey : class, IAPIKey, IHasKey<int>, new() where TUser : class, IApplicationUser
 {
     private readonly RequestDelegate _next = next;
     
     // Get Company Id from incoming requests 
-    public async Task InvokeAsync(HttpContext context, IBaseCurrentTenantService<TUser> currentTenantService)
+    public async Task InvokeAsync(HttpContext context, IBaseCurrentTenantService<TUser, TTenant> currentTenantService)
     {
         try
         {
-            Log.Information("TenantKeyResolver Middleware: Invoked");
+            // Log.Information("TenantKeyResolver Middleware: Invoked");
             // try get from api key
             context.Request.Headers.TryGetValue("X-DigitalKey", out var keyFromHeader);
             // Log.Information($"TenantKeyResolver Middleware: Key: {keyFromHeader}");

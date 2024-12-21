@@ -60,7 +60,7 @@ public class BaseService<T, Tkey, TContext>(TContext context)
             {
                 Succeeded = true,
                 Data = paged
-                    ? reversed ? await context.Set<T>()
+                    ? reversed ? await context.Set<T>().Where(x => x.SearchString.Contains(query))
                             // .OrderByDescending(x => Property.GetValue(x))
                             .Skip(page * pageSize)
                             .Take(pageSize)
@@ -71,12 +71,12 @@ public class BaseService<T, Tkey, TContext>(TContext context)
                             .Take(pageSize)
                             .ToListAsync()
                     : reversed ?
-                        await context.Set<T>()
+                        await context.Set<T>().Where(x => x.SearchString.Contains(query))
                             // .OrderByDescending(x => Property.GetValue(x))
                             .ToListAsync()
                         : await context.Set<T>()
                             .ToListAsync(),
-                TotalCount = await context.Set<T>().CountAsync(),
+                TotalCount = await context.Set<T>().Where(x => x.SearchString.Contains(query)).CountAsync(),
                 CurrentPage = page,
                 PageSize = pageSize,
                 SortBy = sortBy
