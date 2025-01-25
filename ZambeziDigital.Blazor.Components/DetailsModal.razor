@@ -1,0 +1,177 @@
+@typeparam T where T : class, IHasKey<TKey>, new();
+@typeparam TKey where TKey : IEquatable<TKey>;
+@typeparam TService where TService : IBaseService<T, TKey>;
+@inject TService Service
+@inject IJSRuntime JsRuntime
+@if (Object != null)
+{
+    <!-- Modal -->
+    <div id="genericDetails" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenteredScrollableTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenteredScrollableTitle">Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row row-cols-2">
+                        @foreach (var property in PropertyBindings)
+                        {
+                            <div class="col">
+                                <h1 class="h6">@property.Name</h1>
+                            </div>
+
+                            <div class="col text-end">
+                                @{
+                                    //get property value from Object 
+                                    var value = Object?.GetType().GetProperty(property.Name.Replace(" ", ""))?.GetValue(Object)?.ToString() ?? "Not Supplied";
+                                    <p class="h6">@value</p>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+                @if (MenuOptions.Count > 0)
+                {
+                    <div class="modal-footer">
+                        @foreach (var option in MenuOptions)
+                        {
+                            //if option.Navigate is true, then it should navigate to the specified page, else it should open a modal
+                            if (option.Navigate)
+                            {
+                                <a href='@(option.Route + "/" + Object.Id.ToString())' class="btn btn-primary">@option.Name</a>
+                            }
+                            else
+                            {
+                                if (option.OnClick != null)
+                                {
+                                    <button type="button" class="btn btn-primary" @onclick="option.OnClick">@option.Name</button>
+                                }
+                                else
+                                {
+
+                                    <a class="btn btn-white btn-sm" data-bs-toggle="modal" data-bs-target="#@option.Route">
+                                        <i class=" bi-eye-fill me-1"></i> View
+                                    </a>
+                                }
+                            }
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-bs-dismiss="modal">Close</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <!-- End Modal -->
+}
+
+
+@code {
+    [Parameter]
+    public T Object { get; set; }
+    [Parameter]
+    public List<MenuOption> MenuOptions { get; set; } = new();
+    private T Property { get; set; } = new();
+    bool isloading = false;
+    List<DigitalProperty> Properties { get; set; } = new();
+    List<PropertyBinding> PropertyBindings { get; set; } = new();
+protected override void OnInitialized()
+{
+    Properties = GetProperties<DigitalDetail>(Property);
+    PropertyBindings = Properties.Select(p => new PropertyBinding
+    {
+        Name = p.Name,
+        ValueAsString = p.PropertyInfo.PropertyType == typeof(string) ? (string)p.PropertyInfo.GetValue(p.Object) : null,
+        ValueAsBool = p.PropertyInfo.PropertyType == typeof(bool) ? (bool)p.PropertyInfo.GetValue(p.Object) : false,
+        ValueAsDateTime = p.PropertyInfo.PropertyType == typeof(DateTime) ? (DateTime)p.PropertyInfo.GetValue(p.Object) : default,
+        ValueAsTimeOnly = p.PropertyInfo.PropertyType == typeof(TimeOnly) ? (TimeOnly)p.PropertyInfo.GetValue(p.Object) : default,
+        ValueAsNumber = p.PropertyInfo.PropertyType.IsNumericType() ? Convert.ToDouble(p.PropertyInfo.GetValue(p.Object)) : default,
+        ValueAsEnum = p.PropertyInfo.PropertyType.IsEnum ? (int)p.PropertyInfo.GetValue(p.Object) : default
+    }).ToList();
+}
+    
+    // class PropertyBinding {
+    //     public string Name { get; set; }
+    //     public string Value { get; set; }
+    // }
+
+   private async Task Create()
+{
+    // Initialize the object, converting the values to the correct type
+    foreach (var property in PropertyBindings)
+    {
+        // Get the property from T and set the value
+        var prop = Property.GetType().GetProperty(property.Name.Replace(" ", ""));
+        if (prop != null)
+        {
+            if (prop.PropertyType == typeof(string))
+            {
+                prop.SetValue(Property, property.ValueAsString);
+            }
+            else if (prop.PropertyType == typeof(bool))
+            {
+                prop.SetValue(Property, property.ValueAsBool);
+            }
+            else if (prop.PropertyType == typeof(DateTime))
+            {
+                prop.SetValue(Property, property.ValueAsDateTime);
+            }
+            else if (prop.PropertyType == typeof(TimeOnly))
+            {
+                prop.SetValue(Property, property.ValueAsTimeOnly);
+            }
+            else if (prop.PropertyType.IsEnum)
+            {
+                prop.SetValue(Property, Enum.ToObject(prop.PropertyType, property.ValueAsEnum));
+            }
+            else if (prop.PropertyType == typeof(int) ||
+                     prop.PropertyType == typeof(double) ||
+                     prop.PropertyType == typeof(float) ||
+                     prop.PropertyType == typeof(decimal) ||
+                     prop.PropertyType == typeof(long) ||
+                     prop.PropertyType == typeof(short) ||
+                     prop.PropertyType == typeof(byte) ||
+                     prop.PropertyType == typeof(sbyte) ||
+                     prop.PropertyType == typeof(uint) ||
+                     prop.PropertyType == typeof(ulong) ||
+                     prop.PropertyType == typeof(ushort) ||
+                     prop.PropertyType == typeof(char))
+            {
+                prop.SetValue(Property, Convert.ChangeType(property.ValueAsNumber, prop.PropertyType));
+            }
+        }
+    }
+    isloading = true;
+    StateHasChanged();
+    var result = await Service.Create(Property);
+    isloading = false;
+}
+    
+    class PropertyBinding {
+        public string Name { get; set; }
+        public string ValueAsString { get; set; }
+        public bool ValueAsBool { get; set; }
+        public DateTime ValueAsDateTime { get; set; }
+        public TimeOnly ValueAsTimeOnly { get; set; }
+        public double ValueAsNumber { get; set; }
+        public int ValueAsEnum { get; set; }
+        public string GenericValue => ValueAsString ?? ValueAsBool.ToString() ?? ValueAsDateTime.ToString() ?? ValueAsTimeOnly.ToString() ?? ValueAsNumber.ToString() ?? ValueAsEnum.ToString();
+    }
+
+    private async Task OpenDetails(string modalName)
+    {
+        await JsRuntime.InvokeVoidAsync("openModal", modalName);
+    }
+
+    public async Task Reload()
+    {
+        // Object = await Service.Get(Object.Id);
+        StateHasChanged();
+    }
+
+}

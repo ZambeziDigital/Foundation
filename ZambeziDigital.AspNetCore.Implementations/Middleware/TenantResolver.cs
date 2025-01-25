@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using ZambeziDigital.AspNetCore.Implementations.Generics.Middleware;
 using ZambeziDigital.Base.Implementation.Models;
+using ZambeziDigital.Base.Models;
 
 namespace ZambeziDigital.AspNetCore.Implementations.Middleware;
 

@@ -1,3 +1,6 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace ZambeziDigital.Base.Contracts.Base;
 
 public interface IBaseModel<TKey> : IHasKey<TKey> where TKey : IEquatable<TKey>
@@ -6,6 +9,5 @@ public interface IBaseModel<TKey> : IHasKey<TKey> where TKey : IEquatable<TKey>
     string Name { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-    string ToString();
 }
 

@@ -276,6 +276,16 @@
             "related": ".xml"
           }
         }
+      },
+      "ZambeziDigital.Functions/8.6.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/ZambeziDigital.Functions.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ZambeziDigital.Functions.dll": {}
+        }
       }
     }
   },
@@ -737,41 +747,58 @@
         "newtonsoft.json.nuspec",
         "packageIcon.png"
       ]
+    },
+    "ZambeziDigital.Functions/8.6.0": {
+      "type": "project",
+      "path": "../ZambeziDigital.Functions/ZambeziDigital.Functions.csproj",
+      "msbuildProject": "../ZambeziDigital.Functions/ZambeziDigital.Functions.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
       "Microsoft.EntityFrameworkCore >= 8.0.10",
       "Microsoft.Extensions.Identity.Stores >= 8.0.10",
-      "Newtonsoft.Json >= 13.0.3"
+      "Newtonsoft.Json >= 13.0.3",
+      "ZambeziDigital.Functions >= 8.6.0"
     ]
   },
   "packageFolders": {
-    "/Users/ittaitumelo/.nuget/packages/": {}
+    "C:\\Users\\ittai\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "8.5.0",
+    "version": "8.8.2",
     "restore": {
-      "projectUniqueName": "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Base/ZambeziDigital.Base.csproj",
+      "projectUniqueName": "D:\\Projects\\Foundation\\ZambeziDigital.Base\\ZambeziDigital.Base.csproj",
       "projectName": "ZambeziDigital.Base",
-      "projectPath": "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Base/ZambeziDigital.Base.csproj",
-      "packagesPath": "/Users/ittaitumelo/.nuget/packages/",
-      "outputPath": "/Users/ittaitumelo/RiderProjects/ZambeziDigital/ZambeziDigital.Base/obj/",
+      "projectPath": "D:\\Projects\\Foundation\\ZambeziDigital.Base\\ZambeziDigital.Base.csproj",
+      "packagesPath": "C:\\Users\\ittai\\.nuget\\packages\\",
+      "outputPath": "D:\\Projects\\Foundation\\ZambeziDigital.Base\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "/Users/ittaitumelo/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\ittai\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "/usr/local/share/dotnet/library-packs": {},
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Projects\\Foundation\\ZambeziDigital.Functions\\ZambeziDigital.Functions.csproj": {
+              "projectPath": "D:\\Projects\\Foundation\\ZambeziDigital.Functions\\ZambeziDigital.Functions.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -782,7 +809,7 @@
       "restoreAuditProperties": {
         "enableAudit": "true",
         "auditLevel": "low",
-        "auditMode": "all"
+        "auditMode": "direct"
       },
       "SdkAnalysisLevel": "9.0.100"
     },
@@ -814,22 +841,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.11, 8.0.11]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.11, 8.0.11]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

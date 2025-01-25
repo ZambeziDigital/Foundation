@@ -7,7 +7,7 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>ZambeziDigital.AspNetCore.Implementations</Title>
         <Authors>Ittai Tumelo</Authors>
-        <Version>8.5.0</Version>
+        <Version>8.8.0</Version>
     </PropertyGroup>
 
 

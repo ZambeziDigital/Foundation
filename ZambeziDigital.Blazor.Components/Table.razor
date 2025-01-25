@@ -1,10 +1,16 @@
-@typeparam T where T : class, ISearchable, IHasKey<TKey>, new()
+@typeparam T where T : class, IHasKey<TKey>, new()
 @typeparam TKey where TKey : IEquatable<TKey>
 @using Microsoft.AspNetCore.Components.Forms
 @using ZambeziDigital.Blazor.Components.Models
 @typeparam TService where TService : IBaseService<T, TKey>
 @inject TService Service
 @inject IJSRuntime JsRuntime
+
+@if (Object != null)
+{
+  <DetailsModal T="T" TKey="TKey" TService="TService" Object="Object" MenuOptions="DetailsButtons" @ref="detailsModal"/>
+}
+
 
 <CreateModal T="T" TService="TService" TKey="TKey" />
 
@@ -16,12 +22,12 @@
             <EditForm Model="SearchString" OnSubmit="Search">
               <!-- Search -->
               <div class="input-group input-group-merge input-group-flush">
+                <input id="datatableSearch"  type="search" placeholder="Search @className" aria-label="Search @className"
+                       @bind="@SearchString" class="form-control" 
+                >
                 <div class="input-group-prepend input-group-text">
                   <i class="bi-search"></i>
                 </div>
-                <input id="datatableSearch"  type="search" placeholder="Search @className" aria-label="Search @className"
-                       @bind="@SearchString" class="form-control" 
-                       >
               </div>
               <!-- End Search -->
             </EditForm>
@@ -179,7 +185,11 @@
                   <th class="table-column-ps-0">@property.Name</th>
                 }
                 
-                <th class="text-ends">Action</th>
+                <th class="d-flex justify-content-end align-items-center">
+                  <span>
+                    Action
+                  </span>
+                </th>
               </tr>
             </thead>
 
@@ -338,13 +348,22 @@
         <!-- End Footer -->
       </div>
       <!-- End Card -->
-      
-      
-      
 
-  
-  
-      @code {
+@* <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> *@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+  var $j = jQuery.noConflict();
+  $j(document).ready(function(){
+    $j('.modal').modal();
+  });
+
+</script>
+
+
+
+@code {
         private T Property { get; set; } = new();
         [Parameter] public List<T> Items { get; set; } = new();
         private List<SelectableModel<T>>? SelectableModels { get; set; } = new();
@@ -508,7 +527,8 @@
 
   public string ModalId => $"{DocumentType.Replace(" ", "")}Details";
 
-
+  public T Object { get; set; }
+  public DetailsModal<T, TKey, TService> detailsModal { get; set; } = new();
   private async Task OpenDetails(T item)
   {
     StateHasChanged();
@@ -518,7 +538,14 @@
       await OnOpenDetails.InvokeAsync(item);
     }
     else
-      await JsRuntime.InvokeVoidAsync("openModal", AddModalName);
+    {
+      Object = item;
+      detailsModal.Object = item;
+      StateHasChanged();
+      detailsModal.Reload();
+      
+      await JsRuntime.InvokeVoidAsync("openModal", "genericDetails");
+    }
   }
 
 
@@ -577,4 +604,7 @@
 }
 
 List<SelectableModel<DigitalProperty>> SelectedProperties { get; set; } = new();
+        [Parameter]
+        public List<MenuOption> DetailsButtons { get; set; } = new List<MenuOption>();
+
       }

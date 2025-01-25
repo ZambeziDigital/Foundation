@@ -1,3 +1,5 @@
+global using System;
+global using System.Collections.Generic;
 
 namespace ZambeziDigital.Base.Models;
 

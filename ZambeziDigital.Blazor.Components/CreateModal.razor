@@ -1,6 +1,8 @@
 @typeparam T where T : class, IHasKey<TKey>, new();
 @typeparam TKey where TKey : IEquatable<TKey>;
 @using ZambeziDigital.Functions.Helpers
+@using Microsoft.AspNetCore.Components.Forms
+@using ZambeziDigital.Blazor.Components.Models
 @typeparam TService where TService : IBaseService<T, TKey>;
 @inject TService Service
 
@@ -15,15 +17,76 @@
             <div class="modal-body">
                 @foreach (var property in PropertyBindings)
                 {
-                    <!-- Form -->
-                    <div class="mb-4">
-                        <label for="emailLabel" class="form-label">@property.Name</label>
-                        <input type="text" class="form-control" name="company name" id="emailLabel" placeholder="@property.Name"
-                               aria-label="@property.Name" @bind="property.Value"> 
-                    </div>
-                    <!-- End Form -->
-                    
-                    
+                    var propInfo = Property.GetType().GetProperties().FirstOrDefault(p => p.Name.Equals(property.Name.Replace(" ", ""), StringComparison.OrdinalIgnoreCase));
+                    if (propInfo != null && propInfo.PropertyType.IsEnum)
+                    {
+                        var enumType = propInfo.PropertyType;
+                        var enumValues = Enum.GetValues(enumType);
+                        <div class="mb-4">
+                            <label for="@property.Name.Replace(" ","")" class="form-label">@property.Name</label>
+                            <select class="form-select" name="@property.Name" id="@property.Name.Replace(" ","")" @bind="property.ValueAsEnum">
+                                <option value="" disabled="disabled" selected="selected">Select @property.Name</option>
+                                @foreach (var value in enumValues)
+                                {
+                                    <option value="@((int)value)">@value</option>
+                                }
+                            </select>
+                        </div>
+                    }
+                    else if (propInfo != null && propInfo.PropertyType == typeof(bool))
+                    {
+                        <div class="mb-4">
+                            <label for="@property.Name.Replace(" ","")" class="form-label">@property.Name</label>
+                            <!-- Checkbox Switch -->
+                            <div class="form-check form-switch form-switch-between mb-4">
+                                <label class="form-check-label">Off</label>
+                                <InputCheckbox class="form-check-input" name="@property.Name" id="@property.Name.Replace(" ","")" @bind-Value="property.ValueAsBool"/>
+                                <label class="form-check-label">On</label>
+                            </div>
+                            <!-- End Checkbox Switch -->
+                        </div>
+                    }
+                    else if (propInfo != null && propInfo.PropertyType == typeof(DateTime))
+                    {
+                        <div class="mb-4">
+                            <label for="@property.Name.Replace(" ","")" class="form-label">@property.Name</label>
+                            <InputDate class="form-control" name="@property.Name" id="@property.Name.Replace(" ","")" @bind-Value="property.ValueAsDateTime"/>
+                        </div>
+                    }
+                    else if (propInfo != null && propInfo.PropertyType == typeof(TimeOnly))
+                    {
+                        <div class="mb-4">
+                            <label for="@property.Name.Replace(" ","")" class="form-label">@property.Name</label>
+                            <InputDate class="form-control" name="@property.Name" id="@property.Name.Replace(" ","")" @bind-Value="property.ValueAsTimeOnly"/>
+                        </div>
+                    }
+                    else if (propInfo != null && (propInfo.PropertyType == typeof(int) ||
+                                                  propInfo.PropertyType == typeof(double) ||
+                                                  propInfo.PropertyType == typeof(float) ||
+                                                  propInfo.PropertyType == typeof(decimal) ||
+                                                  propInfo.PropertyType == typeof(long) ||
+                                                  propInfo.PropertyType == typeof(short) ||
+                                                  propInfo.PropertyType == typeof(byte) ||
+                                                  propInfo.PropertyType == typeof(sbyte) ||
+                                                  propInfo.PropertyType == typeof(uint) ||
+                                                  propInfo.PropertyType == typeof(ulong) ||
+                                                  propInfo.PropertyType == typeof(ushort) ||
+                                                  propInfo.PropertyType == typeof(char)))
+                    {
+                        <div class="mb-4">
+                            <label for="@property.Name.Replace(" ","")" class="form-label">@property.Name</label>
+                            <input type="number" class="form-control" name="@property.Name" id="@property.Name.Replace(" ","")" placeholder="@property.Name"
+                                   aria-label="@property.Name" @bind="property.ValueAsNumber">
+                        </div>
+                    }
+                    else if (propInfo != null && propInfo.PropertyType == typeof(string))
+                    {
+                        <div class="mb-4">
+                            <label for="@property.Name.Replace(" ","")" class="form-label">@property.Name</label>
+                            <input type="text" class="form-control" name="@property.Name" id="@property.Name.Replace(" ","")" placeholder="@property.Name"
+                                   aria-label="@property.Name" @bind="property.ValueAsString">
+                        </div>
+                    }
                 }
             </div>
             <div class="modal-footer">
@@ -46,32 +109,86 @@
     bool isloading = false;
     List<DigitalProperty> Properties { get; set; } = new();
     List<PropertyBinding> PropertyBindings { get; set; } = new();
-    protected override void OnInitialized()
+protected override void OnInitialized()
+{
+    Properties = GetProperties<PassOnCreate>(Property);
+    PropertyBindings = Properties.Select(p => new PropertyBinding
     {
-        Properties = GetProperties<PassOnCreate>(Property);
-        PropertyBindings = Properties.Select(p => new PropertyBinding { Name = p.Name, Value = p.Name }).ToList();
+        Name = p.Name,
+        ValueAsString = p.PropertyInfo.PropertyType == typeof(string) ? (string)p.PropertyInfo.GetValue(p.Object) : null,
+        ValueAsBool = p.PropertyInfo.PropertyType == typeof(bool) ? (bool)p.PropertyInfo.GetValue(p.Object) : false,
+        ValueAsDateTime = p.PropertyInfo.PropertyType == typeof(DateTime) ? (DateTime)p.PropertyInfo.GetValue(p.Object) : default,
+        ValueAsTimeOnly = p.PropertyInfo.PropertyType == typeof(TimeOnly) ? (TimeOnly)p.PropertyInfo.GetValue(p.Object) : default,
+        ValueAsNumber = p.PropertyInfo.PropertyType.IsNumericType() ? Convert.ToDouble(p.PropertyInfo.GetValue(p.Object)) : default,
+        ValueAsEnum = p.PropertyInfo.PropertyType.IsEnum ? (int)p.PropertyInfo.GetValue(p.Object) : default
+    }).ToList();
+}
+    
+    // class PropertyBinding {
+    //     public string Name { get; set; }
+    //     public string Value { get; set; }
+    // }
 
+   private async Task Create()
+{
+    // Initialize the object, converting the values to the correct type
+    foreach (var property in PropertyBindings)
+    {
+        // Get the property from T and set the value
+        var prop = Property.GetType().GetProperty(property.Name.Replace(" ", ""));
+        if (prop != null)
+        {
+            if (prop.PropertyType == typeof(string))
+            {
+                prop.SetValue(Property, property.ValueAsString);
+            }
+            else if (prop.PropertyType == typeof(bool))
+            {
+                prop.SetValue(Property, property.ValueAsBool);
+            }
+            else if (prop.PropertyType == typeof(DateTime))
+            {
+                prop.SetValue(Property, property.ValueAsDateTime);
+            }
+            else if (prop.PropertyType == typeof(TimeOnly))
+            {
+                prop.SetValue(Property, property.ValueAsTimeOnly);
+            }
+            else if (prop.PropertyType.IsEnum)
+            {
+                prop.SetValue(Property, Enum.ToObject(prop.PropertyType, property.ValueAsEnum));
+            }
+            else if (prop.PropertyType == typeof(int) ||
+                     prop.PropertyType == typeof(double) ||
+                     prop.PropertyType == typeof(float) ||
+                     prop.PropertyType == typeof(decimal) ||
+                     prop.PropertyType == typeof(long) ||
+                     prop.PropertyType == typeof(short) ||
+                     prop.PropertyType == typeof(byte) ||
+                     prop.PropertyType == typeof(sbyte) ||
+                     prop.PropertyType == typeof(uint) ||
+                     prop.PropertyType == typeof(ulong) ||
+                     prop.PropertyType == typeof(ushort) ||
+                     prop.PropertyType == typeof(char))
+            {
+                prop.SetValue(Property, Convert.ChangeType(property.ValueAsNumber, prop.PropertyType));
+            }
+        }
     }
+    isloading = true;
+    StateHasChanged();
+    var result = await Service.Create(Property);
+    isloading = false;
+}
     
     class PropertyBinding {
         public string Name { get; set; }
-        public string Value { get; set; }
+        public string ValueAsString { get; set; }
+        public bool ValueAsBool { get; set; }
+        public DateTime ValueAsDateTime { get; set; }
+        public TimeOnly ValueAsTimeOnly { get; set; }
+        public double ValueAsNumber { get; set; }
+        public int ValueAsEnum { get; set; }
     }
-
-    private async Task Create()
-    {
-        //initialize the object, converting the string values to the correct type
-        foreach (var property in PropertyBindings)
-        {
-            // get the property from T and set the value
-            var prop = Property.GetType().GetProperty(property.Name.Replace(" ", ""));
-            prop.SetValue(Property, Convert.ChangeType(property.Value, prop.PropertyType));
-        }
-        isloading = true;
-        StateHasChanged();
-        var result = await Service.Create(Property);
-        isloading = false;
-    }
-    
 
 }

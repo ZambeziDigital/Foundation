@@ -1,14 +1,10 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
-using ZambeziDigital.Base.Contracts.Base;
 using ZambeziDigital.Base.Contracts.File;
-using ZambeziDigital.Base.Implementation.DTOs;
-using ZambeziDigital.Base.Models;
-using ZambeziDigital.Base.Models.File;
 
-namespace ZambeziDigital.Base.Implementation.Models;
+namespace ZambeziDigital.Base.Models;
 
-public class BaseAttachment : BaseModel<string>, IAttachment<string>, ISearchable
+public class BaseAttachment : BaseModel<string>, IAttachment<string>
 {
     public string? FileUri { get; }
     [NotMapped]

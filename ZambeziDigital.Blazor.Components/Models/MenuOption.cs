@@ -15,4 +15,28 @@ public class MenuOption<T> where T : class, new()
 
 public class MenuOption : MenuOption<object>;
 
+public static class TypeExtensions
+{
+    public static bool IsNumericType(this Type type)
+    {
+        switch (Type.GetTypeCode(type))
+        {
+            case TypeCode.Byte:
+            case TypeCode.Decimal:
+            case TypeCode.Double:
+            case TypeCode.Int16:
+            case TypeCode.Int32:
+            case TypeCode.Int64:
+            case TypeCode.SByte:
+            case TypeCode.Single:
+            case TypeCode.UInt16:
+            case TypeCode.UInt32:
+            case TypeCode.UInt64:
+                return true;
+            default:
+                return false;
+        }
+    }
+}
+
 

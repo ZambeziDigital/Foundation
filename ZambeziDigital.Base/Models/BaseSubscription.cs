@@ -1,8 +1,6 @@
-using ZambeziDigital.Base.Contracts.Base;
 using ZambeziDigital.Base.Contracts.Tenancy;
-using ZambeziDigital.Base.Models;
 
-namespace ZambeziDigital.Base.Implementation.Models;
+namespace ZambeziDigital.Base.Models;
 
 public class BaseSubscription<TTenant> : BaseModel<int>, ISubscription<TTenant>
 where TTenant : class, ITenant, IHasKey<int>, new()

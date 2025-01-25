@@ -15,7 +15,7 @@ using ZambeziDigital.Base.Models;
 
 namespace ZambeziDigital.Blazor.Implementations.Services;
 public class BaseUserService(IHttpClientFactory httpClientFactory, NavigationManager navigationManager) :
-    AuthenticationStateProvider, IUserService<BaseApplicationUser, BaseApplicationUserInfo, LoginDto>, IBaseService<BaseApplicationUser, string>
+    AuthenticationStateProvider, IUserService<BaseApplicationUser, BaseApplicationUserInfo, LoginRequest>, IBaseService<BaseApplicationUser, string>
 {
     private readonly HttpClient _httpClient = httpClientFactory.CreateClient("Auth");
     private bool _authenticated = false;
@@ -70,7 +70,7 @@ public class BaseUserService(IHttpClientFactory httpClientFactory, NavigationMan
         return await Delete(selectableModels.Where(x => x.Selected).Select(x => x.Object.Id).ToList());
     }
 
-    public async Task<BaseResult<BaseApplicationUser>> Login(LoginDto loginDto)
+    public async Task<BaseResult<BaseApplicationUser>> Login(LoginRequest loginDto)
     {
         var request = await _httpClient.PostAsJsonAsync($"api/User/Login", loginDto);
         if (request.StatusCode == HttpStatusCode.BadRequest)

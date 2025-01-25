@@ -1,5 +1,6 @@
 
 using ZambeziDigital.Base.Implementation.Models;
+using ZambeziDigital.Base.Models;
 using ZambeziDigital.Blazor.Implementations.Models.Authentication;
 
 namespace ZambeziDigital.Blazor.Implementations.Contracts.Authentication;

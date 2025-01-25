@@ -18,7 +18,7 @@ public class UserService<TUser, TUserAdd, TUserInfo, TContext, TLoginRequest>(
     BaseService<TUser, string, TContext>(context),
     IUserService<TUser, TUserAdd, TUserInfo, TLoginRequest>
     where TContext : DbContext, IBaseDbContext<TUser>
-    where TUser : IdentityUser, IApplicationUser, ISearchable, new()
+    where TUser : IdentityUser, IApplicationUser, new()
     where TUserInfo : class, IUserInfo
     where TUserAdd : class, IApplicationUserAddRequest
     where TLoginRequest : class, ILoginRequestDto
@@ -127,7 +127,7 @@ public class UserService<TUser, TUserAdd, TUserInfo, TContext, TLoginRequest>(
     {
         // throw new NotImplementedException();
 
-        var user = (await FindByEmailAsync(loginDto.Email)).Data;
+        var user = (await FindByEmailAsync(loginDto.UserName)).Data;
         if (user == null)
         {
             throw new("User not found");

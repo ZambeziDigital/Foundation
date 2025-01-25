@@ -65,3 +65,9 @@ public class DigitalColumn() : Attribute;
     
 [AttributeUsage(AttributeTargets.All)]
 public class PassOnCreate() : Attribute;
+
+[AttributeUsage(AttributeTargets.Property)]
+public class Searchable : Attribute;
+
+[AttributeUsage(AttributeTargets.Property)]
+public class DigitalDetail : Attribute;

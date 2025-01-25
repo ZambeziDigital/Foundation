@@ -152,15 +152,15 @@ public class UserController<
     {
         try
         {
-            Log.Information("Logging in user with email {email}", loginDto.Email);
-            var user = context.Set<TApplicationUser>().AsNoTracking().FirstOrDefault(x => x.Email == loginDto.Email);
+            Log.Information("Logging in user with email {email}", loginDto.UserName);
+            var user = context.Set<TApplicationUser>().AsNoTracking().FirstOrDefault(x => x.Email == loginDto.UserName);
             if (user is null)
             {
-                Log.Error("No {TApplicationUser} with email {email}", nameof(TApplicationUser), loginDto.Email);
+                Log.Error("No {TApplicationUser} with email {email}", nameof(TApplicationUser), loginDto.UserName);
                 return new UnauthorizedObjectResult(new BaseResult()
                 {
                     Succeeded = false,
-                    Errors = new() { $"No {nameof(TApplicationUser)} with email {loginDto.Email}" }
+                    Errors = new() { $"No {nameof(TApplicationUser)} with email {loginDto.UserName}" }
                 });
             }
             Log.Information("User found: {user}", user);
@@ -185,7 +185,7 @@ public class UserController<
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Error logging in user with email {email}", loginDto.Email);
+            Log.Error(ex, "Error logging in user with email {email}", loginDto.UserName);
             return new BadRequestObjectResult(ex.Message);
         }
     }
@@ -356,15 +356,15 @@ public class UserController<
     {
         try
         {
-            Log.Information("Logging in user with email {email}", loginDto.Email);
-            var user = context.Set<TApplicationUser>().AsNoTracking().FirstOrDefault(x => x.Email == loginDto.Email);
+            Log.Information("Logging in user with email {email}", loginDto.UserName);
+            var user = context.Set<TApplicationUser>().AsNoTracking().FirstOrDefault(x => x.Email == loginDto.UserName);
             if (user is null)
             {
-                Log.Error("No {TApplicationUser} with email {email}", nameof(TApplicationUser), loginDto.Email);
+                Log.Error("No {TApplicationUser} with email {email}", nameof(TApplicationUser), loginDto.UserName);
                 return new UnauthorizedObjectResult(new BaseResult()
                 {
                     Succeeded = false,
-                    Errors = new() { $"No {nameof(TApplicationUser)} with email {loginDto.Email}" }
+                    Errors = new() { $"No {nameof(TApplicationUser)} with email {loginDto.UserName}" }
                 });
             }
             Log.Information("User found: {user}", user);
@@ -388,7 +388,7 @@ public class UserController<
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Error logging in user with email {email}", loginDto.Email);
+            Log.Error(ex, "Error logging in user with email {email}", loginDto.UserName);
             return new BadRequestObjectResult(ex.Message);
         }
     }

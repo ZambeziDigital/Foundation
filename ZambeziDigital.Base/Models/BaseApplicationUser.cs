@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Identity;
-using ZambeziDigital.Base.DTOs.Auth;
 using ZambeziDigital.Base.Models.Auth;
 
-namespace ZambeziDigital.Base.Implementation.Models;
+namespace ZambeziDigital.Base.Models;
 
 public class BaseApplicationUser : IdentityUser, IApplicationUser
 {

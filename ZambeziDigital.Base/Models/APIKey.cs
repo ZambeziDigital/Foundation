@@ -1,12 +1,9 @@
-using ZambeziDigital.Base.Contracts.Base;
 using ZambeziDigital.Base.Enums;
-using ZambeziDigital.Base.Models;
-using ZambeziDigital.Base.Services.Contracts;
 using ZambeziDigital.Functions.Helpers;
 
-namespace ZambeziDigital.Base.Implementation.Models;
+namespace ZambeziDigital.Base.Models;
 
-public class APIKey : BaseModel<int>, IAPIKey, ISearchable
+public class APIKey : BaseModel<int>, IAPIKey
 {
     [DigitalColumn]
     public string Key { get; set; }

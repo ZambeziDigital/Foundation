@@ -10,7 +10,7 @@
         <PackageIcon>logo.png</PackageIcon>
         <Company>Zambezi Digital</Company>
         <Authors>Ittai Tumelo, Zimba Isaac</Authors>
-        <Version>8.5.0</Version>
+        <Version>8.8.2</Version>
     </PropertyGroup>
     
     <ItemGroup>
@@ -21,13 +21,12 @@
     </ItemGroup>
     
     <ItemGroup>
-      <Folder Include="Models\Base\" />
-      <Folder Include="Models\H\" />
-    </ItemGroup>
-    
-    <ItemGroup>
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
       <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="8.0.10" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\ZambeziDigital.Functions\ZambeziDigital.Functions.csproj" />
     </ItemGroup>
 </Project>

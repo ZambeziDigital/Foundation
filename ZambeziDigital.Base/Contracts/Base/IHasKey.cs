@@ -1,3 +1,6 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace ZambeziDigital.Base.Contracts.Base;
 
 public interface IHasKey<TKey> where TKey : IEquatable<TKey>

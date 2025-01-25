@@ -1,15 +1,15 @@
 global using ZambeziDigital.Base.Contracts.Base;
 global using ZambeziDigital.Base.Models;
+using ZambeziDigital.Functions.Helpers;
 
 namespace ZambeziDigital.Base.Accounting.ZRA.Models;
 
-public class TypeBase: BaseModel<int>, ISearchable 
+public class TypeBase : BaseModel<int>
 {
-    public string Code { get; set; }
+    [Searchable] public string Code { get; set; }
     public int Id { get; set; }
-    public string Name { get; set; }
-    public string? Description { get; set; }
-    public string? Remark { get; set; }
+    [Searchable] public override string Name { get; set; }
+    [Searchable] public string? Description { get; set; }
+    [Searchable] public string? Remark { get; set; }
     public int SortOrder => Id;
-    public override string SearchString => Code + Name + Description + Remark;
 }
