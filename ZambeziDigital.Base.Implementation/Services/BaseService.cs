@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Json;
 using Microsoft.Extensions.DependencyInjection;
 using ZambeziDigital.Base.Contracts.Base;
@@ -211,6 +212,9 @@ public class BaseService<T, TKey>(IServiceScopeFactory serviceScopeFactory) : IB
     {
         return await Delete(selectableModels.Where(x => x.Selected).Select(x => x.Object.Id).ToList());
     }
+    [DoesNotReturn]
+    public async Task<BaseResult<IQueryable<T>>> SearchAsQueryableAsync(string query) => throw new NotSupportedException("This method is not supported in this class, only in classes that implement the IDbBaseService interface");
+    
 
     public virtual async Task<BaseResult<T>> Update(T t)
     {

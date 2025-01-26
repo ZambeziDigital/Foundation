@@ -17,6 +17,7 @@ public interface IBaseService<T, TKey>
     Task<BaseResult> Delete(TKey id);
     Task<BaseResult> Delete(List<TKey> id);
     Task<BaseResult> Delete(List<SelectableModel<T>> selectableModels);
+    Task<BaseResult<IQueryable<T>>> SearchAsQueryableAsync(string query);
 }
 
 

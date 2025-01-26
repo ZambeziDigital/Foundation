@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http.Json;
 using System.Security.Authentication;
@@ -68,6 +69,11 @@ public class BaseUserService(IHttpClientFactory httpClientFactory, NavigationMan
     public async Task<BaseResult> Delete(List<SelectableModel<BaseApplicationUser>> selectableModels)
     {
         return await Delete(selectableModels.Where(x => x.Selected).Select(x => x.Object.Id).ToList());
+    }
+    [DoesNotReturn]
+    public Task<BaseResult<IQueryable<BaseApplicationUser>>> SearchAsQueryableAsync(string query)
+    {
+        throw new NotSupportedException("This method is not supported in this class, only in classes that implement the IDbBaseService interface");
     }
 
     public async Task<BaseResult<BaseApplicationUser>> Login(LoginRequest loginDto)

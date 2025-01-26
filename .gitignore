@@ -666,3 +666,10 @@ __pycache__/
 # tools/
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Csharp,ASPNETCore
+ZambeziDigital.AspNetCore.Abstractions/obj
+ZambeziDigital.Blazor.Implementations.Generics/obj
+ZambeziDigital.Base.Implementation/obj
+ZambeziDigital.Base/obj
+ZambeziDigital.AspNetCore.Implementations.Generics/obj
+ZambeziDigital.AspNetCore.Abstractions/obj
+ZambeziDigital.AspNetCore.Authorization/obj

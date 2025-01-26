@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http.Json;
 using System.Security.Authentication;
@@ -79,6 +80,9 @@ public class UserService<TUser, TUserAdd, TUserInfo, TForgotPasswordRequest, TRe
     {
         return await Delete(selectableModels.Where(x => x.Selected).Select(x => x.Object.Id).ToList());
     }
+    [DoesNotReturn]
+    public Task<BaseResult<IQueryable<TUser>>> SearchAsQueryableAsync(string query) => throw new NotSupportedException("This method is not supported in this class, only in classes that implement the IDbBaseService interface");
+    
 
     public async Task<BaseResult> Logout(string? page)
     {
