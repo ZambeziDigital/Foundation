@@ -17,7 +17,7 @@ public class BaseListResult<T> : BaseResult<List<T>> where T : class
     public  int TotalPages => (int)Math.Ceiling(TotalCount / (double)PageSize);
     public required int CurrentPage { get; set; }
     public required int PageSize { get; set; }
-    public  bool IsLastPage => CurrentPage >= TotalPages;
+    public  bool IsLastPage => CurrentPage + 1 >= TotalPages;
     public  bool IsFirstPage => CurrentPage == 0;
     public string? SortBy { get; set; } = string.Empty;
 }

@@ -1,7 +1,5 @@
-@typeparam T where T : class, IHasKey<TKey>, new();
-@typeparam TKey where TKey : IEquatable<TKey>;
-@typeparam TService where TService : IBaseService<T, TKey>;
-@inject TService Service
+@typeparam T where T : class, IHasKey<TKey>, new()
+@typeparam TKey where TKey : IEquatable<TKey>
 @inject IJSRuntime JsRuntime
 @inject NavigationManager NavigationManager
 @if (Object != null)
@@ -70,12 +68,6 @@
     </div>
     <!-- End Modal -->
 }
-else
-{
-    <div class="alert alert-danger" role="alert">
-        Loading
-    </div>
-}
 
 
 @code {
@@ -87,6 +79,8 @@ else
     bool isloading = false;
     List<DigitalProperty> Properties { get; set; } = new();
     List<PropertyBinding> PropertyBindings { get; set; } = new();
+    [Parameter]
+    public EventCallback<T> CreateObject { get; set; }
 protected override void OnInitialized()
 {
     Properties = GetProperties<DigitalDetail>(Property);
@@ -101,63 +95,14 @@ protected override void OnInitialized()
         ValueAsEnum = p.PropertyInfo.PropertyType.IsEnum ? (int)p.PropertyInfo.GetValue(p.Object) : default
     }).ToList();
 }
-    
-    // class PropertyBinding {
-    //     public string Name { get; set; }
-    //     public string Value { get; set; }
-    // }
-
-   private async Task Create()
-{
-    // Initialize the object, converting the values to the correct type
-    foreach (var property in PropertyBindings)
+  
+    private async Task Create()
     {
-        // Get the property from T and set the value
-        var prop = Property.GetType().GetProperty(property.Name.Replace(" ", ""));
-        if (prop != null)
-        {
-            if (prop.PropertyType == typeof(string))
-            {
-                prop.SetValue(Property, property.ValueAsString);
-            }
-            else if (prop.PropertyType == typeof(bool))
-            {
-                prop.SetValue(Property, property.ValueAsBool);
-            }
-            else if (prop.PropertyType == typeof(DateTime))
-            {
-                prop.SetValue(Property, property.ValueAsDateTime);
-            }
-            else if (prop.PropertyType == typeof(TimeOnly))
-            {
-                prop.SetValue(Property, property.ValueAsTimeOnly);
-            }
-            else if (prop.PropertyType.IsEnum)
-            {
-                prop.SetValue(Property, Enum.ToObject(prop.PropertyType, property.ValueAsEnum));
-            }
-            else if (prop.PropertyType == typeof(int) ||
-                     prop.PropertyType == typeof(double) ||
-                     prop.PropertyType == typeof(float) ||
-                     prop.PropertyType == typeof(decimal) ||
-                     prop.PropertyType == typeof(long) ||
-                     prop.PropertyType == typeof(short) ||
-                     prop.PropertyType == typeof(byte) ||
-                     prop.PropertyType == typeof(sbyte) ||
-                     prop.PropertyType == typeof(uint) ||
-                     prop.PropertyType == typeof(ulong) ||
-                     prop.PropertyType == typeof(ushort) ||
-                     prop.PropertyType == typeof(char))
-            {
-                prop.SetValue(Property, Convert.ChangeType(property.ValueAsNumber, prop.PropertyType));
-            }
-        }
+        //Call EventCallback to create a new object
+        await CreateObject.InvokeAsync(Object);
     }
-    isloading = true;
-    StateHasChanged();
-    var result = await Service.Create(Property);
-    isloading = false;
-}
+
+
     
     class PropertyBinding {
         public string Name { get; set; }
@@ -170,21 +115,17 @@ protected override void OnInitialized()
         public string GenericValue => ValueAsString ?? ValueAsBool.ToString() ?? ValueAsDateTime.ToString() ?? ValueAsTimeOnly.ToString() ?? ValueAsNumber.ToString() ?? ValueAsEnum.ToString();
     }
 
-    private async Task OpenDetails(string modalName)
-    {
-        await JsRuntime.InvokeVoidAsync("openModal", modalName);
-    }
+
 
     public async Task Reload()
     {
-        // Object = await Service.Get(Object.Id);
         StateHasChanged();
     }
 
     private async Task Navigate(string optionRoute)
     {
         //close the modal
-        await JsRuntime.InvokeVoidAsync("closeModal", "genericDetails");
+        await JsRuntime.InvokeVoidAsync("closeModal", $"#genericCreate+{typeof(T).Name}");
         //navigate to the specified route
         NavigationManager.NavigateTo(optionRoute);
         

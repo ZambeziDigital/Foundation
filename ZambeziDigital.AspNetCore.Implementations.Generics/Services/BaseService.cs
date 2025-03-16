@@ -14,7 +14,8 @@ public class BaseService<T, Tkey, TContext>(TContext context)
 {
     protected readonly TContext context = context;
 
-    public virtual async Task<BaseListResult<T>> Get(bool paged = false, int page = 0, int pageSize = 10, bool cached = false, string? sortBy = null, bool reversed = false)
+    public virtual async Task<BaseListResult<T>> Get(bool paged = false, int page = 0, int pageSize = 10, bool cached = false, string? sortBy = null, bool reversed = false, DateTime startDate = default, DateTime endDate = default)
+    
     {
         var Property = typeof(T).GetProperties().FirstOrDefault(x => x.Name == sortBy);
         if (Property == null)
@@ -106,76 +107,8 @@ public class BaseService<T, Tkey, TContext>(TContext context)
     {
         try
         {
-            // // Determine the property to sort by, defaulting to "Id" if the specified sortBy property is not found
-            // var Property = typeof(T).GetProperties().FirstOrDefault(x => x.Name == sortBy);
-            // if (Property == null)
-            // {
-            //     Property = typeof(T).GetProperties().FirstOrDefault(x => x.Name == "Id");
-            // }
-            //
-            // // Get properties of the Item class that are annotated with the Searchable attribute
-            // var searchProperties = typeof(T).GetProperties().Where(x => x.GetCustomAttributes(typeof(Searchable), true).Any()).ToList();
-            // var result = new List<T>();
-            //
-            // // Start with the full set of items from the context
-            // IQueryable<T> queryable = context.Set<T>();
-            //
-            // // If a query string is provided, build a dynamic LINQ expression to filter items
-            // if (!string.IsNullOrEmpty(query))
-            // {
-            //     // Create a parameter expression representing an item (x)
-            //     var parameter = Expression.Parameter(typeof(T), "x");
-            //
-            //     // Get the Contains method of the string class
-            //     var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
-            //
-            //     // Build a list of expressions to check if any searchable property contains the query string
-            //     var likeExpressions = searchProperties.Select(p =>
-            //     {
-            //         // Access the property of the item
-            //         var propertyAccess = Expression.Property(parameter, p.Name);
-            //
-            //         // Create a call to the Contains method on the property value
-            //         var likeExpression = Expression.Call(propertyAccess, containsMethod, Expression.Constant(query));
-            //         return likeExpression;
-            //     });
-            //
-            //     // Combine all the expressions with OR logic
-            //     var orExpression = likeExpressions.Aggregate<Expression>((accumulate, next) => Expression.OrElse(accumulate, next));
-            //
-            //     // Create a lambda expression representing the combined OR expression
-            //     var lambda = Expression.Lambda<Func<T, bool>>(orExpression, parameter);
-            //
-            //     // Apply the lambda expression as a filter to the queryable
-            //     queryable = queryable.Where(lambda);
-            // }
-            //
-            // // Apply sorting and pagination if requested
-            // if (paged)
-            // {
-            //     // Apply sorting based on the specified property and order
-            //     queryable = reversed
-            //         ? queryable.OrderByDescending(x => Property.GetValue(x))
-            //         : queryable.OrderBy(x => Property.GetValue(x));
-            //
-            //     // Apply pagination
-            //     result = await queryable
-            //         .Skip(page * pageSize)
-            //         .Take(pageSize)
-            //         .ToListAsync();
-            // }
-            // else
-            // {
-            //     // If no pagination, just get the filtered and sorted results
-            //     result = await queryable.ToListAsync();
-            // }
-            
             var result = await SearchAsQueryableAsync(query, paged, page, pageSize, cached, sortBy, reversed, startDate, endDate);
-            // if (!result.Succeeded)
-            // {
-            //     
-            //    
-            // }
+            
             var queryable = result.Data;
 
             // Get the total count of items matching the query
@@ -185,7 +118,7 @@ public class BaseService<T, Tkey, TContext>(TContext context)
             return new BaseListResult<T>
             {
                 Succeeded = true,
-                Data = result,
+                Data = await result.Data.ToListAsync(),
                 TotalCount = totalSearchResults,
                 CurrentPage = page,
                 PageSize = pageSize,
@@ -212,7 +145,10 @@ public class BaseService<T, Tkey, TContext>(TContext context)
             return result;
         }
     }
-    public virtual async Task<BaseResult<IQueryable<T>>> SearchAsQueryableAsync(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false, string? sortBy = null, bool reversed = false, DateTime startDate = default, DateTime endDate = default)
+
+    public virtual async Task<BaseResult<IQueryable<T>>> SearchAsQueryableAsync(string query, bool paged = false,
+        int page = 0, int pageSize = 10, bool cached = false, string? sortBy = null, bool reversed = false,
+        DateTime startDate = default, DateTime endDate = default)
     {
         try
         {
@@ -221,7 +157,9 @@ public class BaseService<T, Tkey, TContext>(TContext context)
             {
                 Property = typeof(T).GetProperties().FirstOrDefault(x => x.Name == "Id");
             }
-            var searchProperties = typeof(T).GetProperties().Where(x => x.GetCustomAttributes(typeof(Searchable), true).Any()).ToList();
+
+            var searchProperties = typeof(T).GetProperties()
+                .Where(x => x.GetCustomAttributes(typeof(Searchable), true).Any()).ToList();
             IQueryable<T> queryable = context.Set<T>();
             if (!string.IsNullOrEmpty(query))
             {
@@ -230,13 +168,91 @@ public class BaseService<T, Tkey, TContext>(TContext context)
                 var likeExpressions = searchProperties.Select(p =>
                 {
                     var propertyAccess = Expression.Property(parameter, p.Name);
-                    var likeExpression = Expression.Call(propertyAccess, containsMethod, Expression.Constant(query));
+                    Expression likeExpression = null;
+
+                    if (p.PropertyType == typeof(string))
+                    {
+                        likeExpression = Expression.Call(propertyAccess, containsMethod, Expression.Constant(query));
+                    }
+                    else if (p.PropertyType == typeof(int) || p.PropertyType == typeof(double) ||
+                             p.PropertyType == typeof(float))
+                    {
+                        var convertedQuery = Convert.ChangeType(query, p.PropertyType);
+                        likeExpression = Expression.Equal(propertyAccess, Expression.Constant(convertedQuery));
+                    }
+                    else if (p.PropertyType == typeof(bool))
+                    {
+                        if (bool.TryParse(query, out var boolQuery))
+                        {
+                            likeExpression = Expression.Equal(propertyAccess, Expression.Constant(boolQuery));
+                        }
+                    }
+                    else if (p.PropertyType.IsEnum)
+                    {
+                        var enumValue = Enum.Parse(p.PropertyType, query);
+                        likeExpression = Expression.Equal(propertyAccess, Expression.Constant(enumValue));
+                    }
+
                     return likeExpression;
-                });
-                var orExpression = likeExpressions.Aggregate<Expression>((accumulate, next) => Expression.OrElse(accumulate, next));
-                var lambda = Expression.Lambda<Func<T, bool>>(orExpression, parameter);
-                queryable = queryable.Where(lambda);
+                }).Where(expr => expr != null).ToList();
+
+                if (likeExpressions.Any())
+                {
+                    var orExpression =
+                        likeExpressions.Aggregate<Expression>((accumulate, next) => Expression.OrElse(accumulate, next));
+                    var lambda = Expression.Lambda<Func<T, bool>>(orExpression, parameter);
+                    queryable = queryable.Where(lambda);
+                }
             }
+
+            // Add date filtering
+            if (startDate != default || endDate != default)
+            {
+                //check is the property is a date and is anotation with the DigitalFilterableDate attribute
+                var dateProperties = typeof(T).GetProperties().Where(p => p.PropertyType == typeof(DateTime) &&
+                                                                         p.GetCustomAttributes(typeof(DigitalFilterableDate),
+                                                                             true).Any()).ToList();
+                if (dateProperties.Any())
+                {
+                    var parameter = Expression.Parameter(typeof(T), "x");
+                    Expression dateExpression = null;
+
+                    if (startDate != default)
+                    {
+                        var startDateExpressions = dateProperties.Select(p =>
+                        {
+                            var propertyAccess = Expression.Property(parameter, p.Name);
+                            var startDateExpression =
+                                Expression.GreaterThanOrEqual(propertyAccess, Expression.Constant(startDate));
+                            return startDateExpression;
+                        });
+                        dateExpression =
+                            startDateExpressions.Aggregate<Expression>((accumulate, next) =>
+                                Expression.OrElse(accumulate, next));
+                    }
+
+                    if (endDate != default)
+                    {
+                        var endDateExpressions = dateProperties.Select(p =>
+                        {
+                            var propertyAccess = Expression.Property(parameter, p.Name);
+                            var endDateExpression =
+                                Expression.LessThanOrEqual(propertyAccess, Expression.Constant(endDate));
+                            return endDateExpression;
+                        });
+                        var endDateExpression =
+                            endDateExpressions.Aggregate<Expression>((accumulate, next) =>
+                                Expression.OrElse(accumulate, next));
+                        dateExpression = dateExpression == null
+                            ? endDateExpression
+                            : Expression.AndAlso(dateExpression, endDateExpression);
+                    }
+
+                    var dateLambda = Expression.Lambda<Func<T, bool>>(dateExpression, parameter);
+                    queryable = queryable.Where(dateLambda);
+                }
+            }
+
             if (paged)
             {
                 queryable = reversed
@@ -246,14 +262,16 @@ public class BaseService<T, Tkey, TContext>(TContext context)
                     .Skip(page * pageSize)
                     .Take(pageSize);
             }
+
             return new BaseResult<IQueryable<T>> { Succeeded = true, Data = queryable };
         }
         catch (Exception e)
         {
-            return new BaseResult<IQueryable<T>> { Succeeded = false, Errors = new List<string> { e.Message }, Message = e.Message };
+            return new BaseResult<IQueryable<T>>
+                { Succeeded = false, Errors = new List<string> { e.Message }, Message = e.Message };
         }
     }
-    
+
     public virtual async Task<BaseResult<T>> Create(T entity)
     {
         var result = await context.Set<T>().AddAsync(entity);

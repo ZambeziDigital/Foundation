@@ -11,6 +11,8 @@ public class MenuOption<T> where T : class, new()
     public List<MenuOption<T>>? SubMenu { get; set; } = new();
     public Func<T, Task>? OnClick { get; set; }
     public bool Navigate { get; set; } = false;
+    public bool TargetBlank { get; set; } = false;
+    public string? PropertyName { get; set; }
 }
 
 public class MenuOption : MenuOption<object>;

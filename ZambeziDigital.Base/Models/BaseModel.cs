@@ -15,7 +15,7 @@ public class BaseModel<TKey> : IBaseModel<TKey>
     /// <summary>
     /// This is the primary key of the entity. You do not pass it, it is generated automatically.
     /// </summary>
-    public TKey Id { get; set; }
+    public virtual TKey Id { get; set; }
     /// <summary>
     /// This is the name of the entity. It is required.
     /// </summary>

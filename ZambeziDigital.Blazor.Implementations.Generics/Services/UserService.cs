@@ -80,6 +80,13 @@ public class UserService<TUser, TUserAdd, TUserInfo, TForgotPasswordRequest, TRe
     {
         return await Delete(selectableModels.Where(x => x.Selected).Select(x => x.Object.Id).ToList());
     }
+
+    public Task<BaseResult<IQueryable<TUser>>> SearchAsQueryableAsync(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false,
+        string? sortBy = null, bool reversed = false, DateTime startDate = default, DateTime endDate = default)
+    {
+        throw new NotImplementedException();
+    }
+
     [DoesNotReturn]
     public Task<BaseResult<IQueryable<TUser>>> SearchAsQueryableAsync(string query) => throw new NotSupportedException("This method is not supported in this class, only in classes that implement the IDbBaseService interface");
     
@@ -145,7 +152,6 @@ public class UserService<TUser, TUserAdd, TUserInfo, TForgotPasswordRequest, TRe
         // Users = objects ?? throw new Exception("No objects were found");
         return objects ?? throw new Exception("No objects were found");
     }
-
     public Task<BaseResult<TUser>> Get(string id, bool cached = false)
     {
         var user = Users.FirstOrDefault(x => x.Id.Equals(id));
@@ -162,7 +168,6 @@ public class UserService<TUser, TUserAdd, TUserInfo, TForgotPasswordRequest, TRe
             Errors = user == null ? new List<string>() { $"User with Id {id} not found" } : new List<string>()
         });
     }
-
     public async Task<BaseResult<TUser>> Update(TUser t)
     {
         var request = await _httpClient.PutAsJsonAsync($"api/User", t);
@@ -174,15 +179,12 @@ public class UserService<TUser, TUserAdd, TUserInfo, TForgotPasswordRequest, TRe
             Data = user
         };
     }
-
     public async Task<string> Delete(TUserAdd id)
     {
         var request = await _httpClient.DeleteAsync($"api/User/{id}");
         if (!request.IsSuccessStatusCode) throw new Exception(request.ReasonPhrase);
         return await request.Content.ReadAsStringAsync();
     }
-
-
     public async Task<BaseResult<TUser?>> FindByEmailAsync(string email)
     {
         var request = await _httpClient.GetAsync($"api/User/FindByEmailAsync/{email}");
@@ -199,17 +201,14 @@ public class UserService<TUser, TUserAdd, TUserInfo, TForgotPasswordRequest, TRe
             Data = user
         };
     }
-
     public async Task<BaseResult> RequestPasswordReset(TForgotPasswordRequest request)
     {
         throw new NotImplementedException();
     }
-
     public async Task<BaseResult> ResetPasswordRequest(TResetPasswordRequest request)
     {
         throw new NotImplementedException();
     }
-
     public async Task<BaseResult> Login(TLoginRequestDto loginDto)
     {
         // var request = await _httpClient.PostAsJsonAsync($"login?useCookies=true&useSessionCookies=true", loginDto);
@@ -225,8 +224,6 @@ public class UserService<TUser, TUserAdd, TUserInfo, TForgotPasswordRequest, TRe
         // CurrentUser = result.Succeeded ? result : null;
         return result;
     }
-
-
     public async Task<BaseResult> RequestPasswordReset(string email)
     {
         var request = await _httpClient.GetAsync($"api/User/ForgotPassword/{email}");
@@ -237,7 +234,6 @@ public class UserService<TUser, TUserAdd, TUserInfo, TForgotPasswordRequest, TRe
         }
         return await request.Content.ReadFromJsonAsync<BaseResult>();
     }
-
     public async Task<BaseResult> RequestResetPassword(TForgotPasswordRequest requestDto)
     {
         throw new NotImplementedException();
@@ -365,6 +361,18 @@ public class UserService<TUser, TUserAdd, TUserInfo, TForgotPasswordRequest, TRe
 
     public Task<BaseListResult<TUser>> Search(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false,
         string? sortBy = null, bool reversed = false)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<BaseListResult<TUser>> Get(bool paged = false, int page = 0, int pageSize = 10, bool cached = false, string? sortBy = null,
+        bool reversed = false, DateTime startDate = default, DateTime endDate = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<BaseListResult<TUser>> Search(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false,
+        string? sortBy = null, bool reversed = false, DateTime startDate = default, DateTime endDate = default)
     {
         throw new NotImplementedException();
     }

@@ -76,7 +76,7 @@ public class Address : BaseModel<int>
     [PassOnCreate]
     [DigitalDetail]
     [DigitalColumn]
-    public virtual string Country { get; set; }
+    public virtual string? Country { get; set; }
 
     [PassOnCreate]
     [DigitalDetail]

@@ -277,7 +277,7 @@
           }
         }
       },
-      "ZambeziDigital.Functions/8.6.0": {
+      "ZambeziDigital.Functions/8.7.2": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "compile": {
@@ -748,7 +748,7 @@
         "packageIcon.png"
       ]
     },
-    "ZambeziDigital.Functions/8.6.0": {
+    "ZambeziDigital.Functions/8.7.2": {
       "type": "project",
       "path": "../ZambeziDigital.Functions/ZambeziDigital.Functions.csproj",
       "msbuildProject": "../ZambeziDigital.Functions/ZambeziDigital.Functions.csproj"
@@ -759,7 +759,7 @@
       "Microsoft.EntityFrameworkCore >= 8.0.10",
       "Microsoft.Extensions.Identity.Stores >= 8.0.10",
       "Newtonsoft.Json >= 13.0.3",
-      "ZambeziDigital.Functions >= 8.6.0"
+      "ZambeziDigital.Functions >= 8.7.2"
     ]
   },
   "packageFolders": {
@@ -767,7 +767,7 @@
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "8.8.2",
+    "version": "8.9.4",
     "restore": {
       "projectUniqueName": "D:\\Projects\\Foundation\\ZambeziDigital.Base\\ZambeziDigital.Base.csproj",
       "projectName": "ZambeziDigital.Base",
@@ -811,7 +811,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.100"
+      "SdkAnalysisLevel": "9.0.200"
     },
     "frameworks": {
       "net8.0": {
@@ -846,7 +846,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

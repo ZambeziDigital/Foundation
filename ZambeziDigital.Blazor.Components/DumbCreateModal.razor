@@ -1,10 +1,5 @@
 @typeparam T where T : class, IHasKey<TKey>, new();
 @typeparam TKey where TKey : IEquatable<TKey>;
-@using ZambeziDigital.Functions.Helpers
-@using Microsoft.AspNetCore.Components.Forms
-@using ZambeziDigital.Blazor.Components.Models
-@typeparam TService where TService : IBaseService<T, TKey>;
-@inject TService Service
 
 <!-- Modal -->
 <div id='@("genericCreate"+typeof(T).Name)' class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenteredScrollableTitle" aria-hidden="true">
@@ -109,6 +104,7 @@
     bool isloading = false;
     List<DigitalProperty> Properties { get; set; } = new();
     List<PropertyBinding> PropertyBindings { get; set; } = new();
+    [Parameter] public EventCallback<T> CreateObject { get; set; }
 protected override void OnInitialized()
 {
     Properties = GetProperties<PassOnCreate>(Property);
@@ -177,7 +173,7 @@ protected override void OnInitialized()
     }
     isloading = true;
     StateHasChanged();
-    var result = await Service.Create(Property);
+    await CreateObject.InvokeAsync(Property);
     isloading = false;
 }
     

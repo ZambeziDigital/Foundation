@@ -5,7 +5,7 @@
   },
   "projects": {
     "D:\\Projects\\Foundation\\ZambeziDigital.AspNetCore.Abstractions\\ZambeziDigital.AspNetCore.Abstractions.csproj": {
-      "version": "8.5.0",
+      "version": "8.6.1",
       "restore": {
         "projectUniqueName": "D:\\Projects\\Foundation\\ZambeziDigital.AspNetCore.Abstractions\\ZambeziDigital.AspNetCore.Abstractions.csproj",
         "projectName": "ZambeziDigital.AspNetCore.Abstractions",
@@ -49,7 +49,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -84,12 +84,12 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
     "D:\\Projects\\Foundation\\ZambeziDigital.AspNetCore.Implementations.Generics\\ZambeziDigital.AspNetCore.Implementations.Generics.csproj": {
-      "version": "8.10.0",
+      "version": "8.11.4",
       "restore": {
         "projectUniqueName": "D:\\Projects\\Foundation\\ZambeziDigital.AspNetCore.Implementations.Generics\\ZambeziDigital.AspNetCore.Implementations.Generics.csproj",
         "projectName": "ZambeziDigital.AspNetCore.Implementations.Generics",
@@ -136,7 +136,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -171,12 +171,12 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
     "D:\\Projects\\Foundation\\ZambeziDigital.Base.Implementation\\ZambeziDigital.Base.Implementation.csproj": {
-      "version": "8.7.0",
+      "version": "8.8.2",
       "restore": {
         "projectUniqueName": "D:\\Projects\\Foundation\\ZambeziDigital.Base.Implementation\\ZambeziDigital.Base.Implementation.csproj",
         "projectName": "ZambeziDigital.Base.Implementation",
@@ -223,12 +223,16 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Components.Authorization": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.0.10, )"
@@ -254,12 +258,12 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
     "D:\\Projects\\Foundation\\ZambeziDigital.Base\\ZambeziDigital.Base.csproj": {
-      "version": "8.8.2",
+      "version": "8.9.4",
       "restore": {
         "projectUniqueName": "D:\\Projects\\Foundation\\ZambeziDigital.Base\\ZambeziDigital.Base.csproj",
         "projectName": "ZambeziDigital.Base",
@@ -303,7 +307,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -338,12 +342,12 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
     "D:\\Projects\\Foundation\\ZambeziDigital.Functions\\ZambeziDigital.Functions.csproj": {
-      "version": "8.6.0",
+      "version": "8.7.2",
       "restore": {
         "projectUniqueName": "D:\\Projects\\Foundation\\ZambeziDigital.Functions\\ZambeziDigital.Functions.csproj",
         "projectName": "ZambeziDigital.Functions",
@@ -383,7 +387,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -404,7 +408,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

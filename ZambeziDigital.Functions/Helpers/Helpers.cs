@@ -71,3 +71,15 @@ public class Searchable : Attribute;
 
 [AttributeUsage(AttributeTargets.Property)]
 public class DigitalDetail : Attribute;
+[AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+public class DigitalFilterableDate : Attribute
+{
+    public DigitalFilterableDate()
+    {
+        // Ensure this attribute is only applied to DateTime properties
+        if (typeof(DateTime) != typeof(DateTime))
+        {
+            throw new InvalidOperationException("DigitalFilterableDate attribute can only be applied to DateTime properties.");
+        }
+    }
+}

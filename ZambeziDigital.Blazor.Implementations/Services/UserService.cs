@@ -71,7 +71,7 @@ public class BaseUserService(IHttpClientFactory httpClientFactory, NavigationMan
         return await Delete(selectableModels.Where(x => x.Selected).Select(x => x.Object.Id).ToList());
     }
     [DoesNotReturn]
-    public Task<BaseResult<IQueryable<BaseApplicationUser>>> SearchAsQueryableAsync(string query)
+    public Task<BaseResult<IQueryable<BaseApplicationUser>>> SearchAsQueryableAsync(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false, string? sortBy = null, bool reversed = false, DateTime startDate = default, DateTime endDate = default)
     {
         throw new NotSupportedException("This method is not supported in this class, only in classes that implement the IDbBaseService interface");
     }
@@ -407,19 +407,19 @@ public class BaseUserService(IHttpClientFactory httpClientFactory, NavigationMan
         throw new NotImplementedException();
     }
 
-    public Task<BaseListResult<BaseApplicationUser>> Search(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false)
+    public Task<BaseListResult<BaseApplicationUser>> Search(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false, DateTime startDate = default, DateTime endDate = default)
     {
         throw new NotImplementedException();
     }
 
     public Task<BaseListResult<BaseApplicationUser>> Get(bool paged = false, int page = 0, int pageSize = 10, bool cached = false, string? sortBy = null,
-        bool reversed = false)
+        bool reversed = false, DateTime startDate = default, DateTime endDate = default)
     {
         throw new NotImplementedException();
     }
 
     public Task<BaseListResult<BaseApplicationUser>> Search(string query, bool paged = false, int page = 0, int pageSize = 10, bool cached = false,
-        string? sortBy = null, bool reversed = false)
+        string? sortBy = null, bool reversed = false, DateTime startDate = default, DateTime endDate = default)
     {
         throw new NotImplementedException();
     }

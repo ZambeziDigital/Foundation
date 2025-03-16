@@ -1,18 +1,8 @@
 @typeparam T where T : class, IHasKey<TKey>, new()
 @typeparam TKey where TKey : IEquatable<TKey>
-@using Microsoft.AspNetCore.Components.Forms
-@using ZambeziDigital.Blazor.Components.Models
-@typeparam TService where TService : IBaseService<T, TKey>
-@inject TService Service
 @inject IJSRuntime JsRuntime
 
-@if (Object != null)
-{
-  <DetailsModal T="T" TKey="TKey" TService="TService" Object="Object" MenuOptions="DetailsButtons" @ref="detailsModal"/>
-}
 
-
-<CreateModal T="T" TService="TService" TKey="TKey" />
 
 <!-- Card -->
       <div class="card">
@@ -22,11 +12,11 @@
             <EditForm Model="SearchString" OnSubmit="Search">
               <!-- Search -->
               <div class="input-group input-group-merge input-group-flush">
-                
+                <input id="datatableSearch"  type="search" placeholder="Search @className" aria-label="Search @className"
+                       @bind="@SearchString" class="form-control" 
+                >
                 <div class="input-group-prepend input-group-text">
                   <i class="bi-search"></i>
-                  <input id="datatableSearch"  type="search" placeholder="Search @className" aria-label="Search @className"
-                         @bind="@SearchString" class="form-control">
                 </div>
               </div>
               <!-- End Search -->
@@ -87,42 +77,40 @@
               </div>
             </div>
             <!-- End Dropdown -->
-            @if (CanExport)
-            {
-              <!-- Dropdown -->
-              <div class="dropdown">
-                <button type="button" class="btn btn-white btn-sm w-100" id="usersExportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="bi-download me-2"></i> Export
-                </button>
+            <!-- Dropdown -->
+            <div class="dropdown">
+              <button type="button" class="btn btn-white btn-sm w-100" id="usersExportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi-download me-2"></i> Export
+              </button>
 
-                <div class="dropdown-menu dropdown-menu-sm-end" aria-labelledby="usersExportDropdown">
-                  <span class="dropdown-header">Options</span>
-                  @* <a id="export-copy" class="dropdown-item" href="javascript:;"> *@
-                  @*   <img class="avatar avatar-xss avatar-4x3 me-2" src="./assets/svg/illustrations/copy-icon.svg" alt="Image Description"> *@
-                  @*   Copy *@
-                  @* </a> *@
-                  @* <a id="export-print" class="dropdown-item" href="javascript:;"> *@
-                  @*   <img class="avatar avatar-xss avatar-4x3 me-2" src="./assets/svg/illustrations/print-icon.svg" alt="Image Description"> *@
-                  @*   Print *@
-                  @* </a> *@
-                  <div class="dropdown-divider"></div>
-                  <span class="dropdown-header">Download options</span>
-                  <a id="export-excel" class="dropdown-item" @onclick="ExportListToExcelAsync">
-                    <img class="avatar avatar-xss avatar-4x3 me-2" src="./assets/svg/brands/excel-icon.svg" alt="Image Description">
-                    Excel
-                  </a>
-                  @* <a id="export-csv" class="dropdown-item" href="javascript:;"> *@
-                  @*   <img class="avatar avatar-xss avatar-4x3 me-2" src="./assets/svg/components/placeholder-csv-format.svg" alt="Image Description"> *@
-                  @*   .CSV *@
-                  @* </a> *@
-                  @* <a id="export-pdf" class="dropdown-item" href="javascript:;"> *@
-                  @*   <img class="avatar avatar-xss avatar-4x3 me-2" src="./assets/svg/brands/pdf-icon.svg" alt="Image Description"> *@
-                  @*   PDF *@
-                  @* </a> *@
-                </div>
+              <div class="dropdown-menu dropdown-menu-sm-end" aria-labelledby="usersExportDropdown">
+                <span class="dropdown-header">Options</span>
+                @* <a id="export-copy" class="dropdown-item" href="javascript:;"> *@
+                @*   <img class="avatar avatar-xss avatar-4x3 me-2" src="./assets/svg/illustrations/copy-icon.svg" alt="Image Description"> *@
+                @*   Copy *@
+                @* </a> *@
+                @* <a id="export-print" class="dropdown-item" href="javascript:;"> *@
+                @*   <img class="avatar avatar-xss avatar-4x3 me-2" src="./assets/svg/illustrations/print-icon.svg" alt="Image Description"> *@
+                @*   Print *@
+                @* </a> *@
+                <div class="dropdown-divider"></div>
+                <span class="dropdown-header">Download options</span>
+                <a id="export-excel" class="dropdown-item" @onclick="ExportListToExcelAsync">
+                  <img class="avatar avatar-xss avatar-4x3 me-2" src="./assets/svg/brands/excel-icon.svg" alt="Image Description">
+                  Excel
+                </a>
+                @* <a id="export-csv" class="dropdown-item" href="javascript:;"> *@
+                @*   <img class="avatar avatar-xss avatar-4x3 me-2" src="./assets/svg/components/placeholder-csv-format.svg" alt="Image Description"> *@
+                @*   .CSV *@
+                @* </a> *@
+                @* <a id="export-pdf" class="dropdown-item" href="javascript:;"> *@
+                @*   <img class="avatar avatar-xss avatar-4x3 me-2" src="./assets/svg/brands/pdf-icon.svg" alt="Image Description"> *@
+                @*   PDF *@
+                @* </a> *@
               </div>
-              <!-- End Dropdown -->
-            }
+            </div>
+            <!-- End Dropdown -->
+
             @if (CanCreate)
             {
               if (AddMenus == null)
@@ -225,42 +213,23 @@
                         <i class="bi bi-three-dots-vertical"></i>
                       </a>
                       <div class="dropdown-menu dropdown-menu-end mt-1" aria-labelledby="productsEditDropdown1">
-                        @if (CanEdit)
+                        <a class="dropdown-item" href="#">
+                          <i class="bi-pencil-fill dropdown-item-icon"></i> Edit
+                        </a> 
+                        <a class="dropdown-item" href="#">
+                          <i class="bi-trash dropdown-item-icon"></i> Delete
+                        </a>
+                        @foreach (var option in MenuOptions )
                         {
-                          <a class="dropdown-item" href="#">
-                            <i class="bi-pencil-fill dropdown-item-icon"></i> Edit
-                          </a>
-                        }
-                        @if(CanDelete)
-                        {
-                          <a class="dropdown-item" href="#">
-                            <i class="bi-trash dropdown-item-icon"></i> Delete
-                          </a>
-                        }
-                        @foreach (var option in MenuOptions)
-                        {
-                          @if (option.OnClick != null)
+                          @if(option.OnClick != null)
                           {
-                            <a class="dropdown-item" @onclick="async () => await option.OnClick.Invoke(item)">
+                            <a class="dropdown-item" @onclick="async()=> await option.OnClick.Invoke(item)">
                               <i class="@option.Icon dropdown-item-icon"></i> @option.Name
                             </a>
                           }
-                          else if (option.Navigate && option.TargetBlank && option.PropertyName != null)
+                          else
                           {
-                            var value = item.GetType().GetProperty(option.PropertyName)?.GetValue(item);
-                            <a class="dropdown-item" href="@value" target="_blank">
-                              <i class="@option.Icon dropdown-item-icon"></i> @option.Name
-                            </a>
-                          }
-                          else if (option.Navigate)
-                          {
-                            <a class="dropdown-item" href="@option.Route">
-                              <i class="@option.Icon dropdown-item-icon"></i> @option.Name
-                            </a>
-                          }
-                          else 
-                          {
-                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#@option.Route">
+                            <a class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#@option.Route" >
                               <i class="@option.Icon dropdown-item-icon"></i> @option.Name
                             </a>
                           }
@@ -380,12 +349,9 @@
   public List<SelectableModel<T>>? SelectableModels { get; set; } = new();
   List<DigitalProperty> Properties => SelectedProperties.Where(x => x.Selected).Select(x => x.Object).ToList();
   readonly string className = typeof(T).Name;
-    
-  [Parameter] public bool CanEdit { get; set; } = false;
-  [Parameter] public bool CanDelete { get; set; } = false;
-  [Parameter] public bool CanExport { get; set; } = false;
   
-  private BaseListResult<T> ListData { get; set; } = new BaseListResult<T>
+  
+  [Parameter] public BaseListResult<T> ListData { get; set; } = new BaseListResult<T>
   {
     TotalCount = 0,
     CurrentPage = 0,
@@ -397,8 +363,7 @@
   protected override async Task OnInitializedAsync()
   {
     SelectedProperties = GetProperties(Property).Select(x => new SelectableModel<DigitalProperty> { Object = x, Selected = false }).ToList();
-    var result = await Service.Get(true, pageSize: PageSize ?? 10);
-    ListData = result;
+    ListData.Data = Items;
     SelectableModels = ListData.Data?.Select(x => new SelectableModel<T> { Object = x, Selected = false }).ToList() ?? new List<SelectableModel<T>>();
     //turn on 7
     int i = 0;
@@ -420,22 +385,12 @@
   private async Task Search()
   {
     isLoading = true;
-    if (string.IsNullOrEmpty(SearchString))
-    {
-      await OnInitializedAsync();
-      return;
-    }
 
-    var result = await Service.Search(SearchString, true, ListData.CurrentPage, ListData.PageSize, false);
-    ListData = result;
-    SelectableModels = ListData.Data?.Select(x => new SelectableModel<T> { Object = x, Selected = false }).ToList() ?? new List<SelectableModel<T>>();
+    await OnSearch.InvokeAsync(SearchString);
+
     isLoading = false;
     StateHasChanged();
   }
-
-
-
-
 
 
 
@@ -443,9 +398,7 @@
   {
     isLoading = true;
     StateHasChanged();
-    ListData.CurrentPage = ListData.CurrentPage < PageNumbers.Count ? (ListData.CurrentPage + 1) : ListData.CurrentPage;
-    ListData = string.IsNullOrEmpty(SearchString) ? await Service.Get(true, ListData.CurrentPage, ListData.PageSize) : await Service.Search(SearchString, true, ListData.CurrentPage, ListData.PageSize);
-    SelectableModels = ListData.Data?.Select(x => new SelectableModel<T> { Object = x, Selected = false }).ToList() ?? new List<SelectableModel<T>>();
+    await OnNextPage.InvokeAsync();
     isLoading = false;
     StateHasChanged();
   }
@@ -454,9 +407,7 @@
   {
     isLoading = true;
     StateHasChanged();
-    ListData.CurrentPage = ListData.CurrentPage < PageNumbers.Count ? (ListData.CurrentPage) : ListData.CurrentPage;
-    ListData = string.IsNullOrEmpty(SearchString) ? await Service.Get(true, ListData.CurrentPage, ListData.PageSize) : await Service.Search(SearchString, true, ListData.CurrentPage, ListData.PageSize);
-    SelectableModels = ListData.Data?.Select(x => new SelectableModel<T> { Object = x, Selected = false }).ToList();
+    await OnSelect.InvokeAsync();
     isLoading = false;
     StateHasChanged();
   }
@@ -465,9 +416,7 @@
   {
     isLoading = true;
     StateHasChanged();
-    ListData.CurrentPage = ListData.CurrentPage > 0 ? (ListData.CurrentPage - 1) : ListData.CurrentPage;
-    ListData = string.IsNullOrEmpty(SearchString) ? (await Service.Get(true, ListData.CurrentPage, ListData.PageSize)) : (await Service.Search(SearchString, true));
-    SelectableModels = ListData.Data?.Select(x => new SelectableModel<T> { Object = x, Selected = false }).ToList() ?? new List<SelectableModel<T>>();
+    await OnPreviousPage.InvokeAsync();
     isLoading = false;
     StateHasChanged();
   }
@@ -526,7 +475,11 @@
   [Parameter] public List<MenuOption<T>>? AddMenus { get; set; }
   [Parameter] public EventCallback<BaseListResult<T>> OnGet { get; set; }
   [Parameter] public EventCallback<BaseListResult<T>> OnAfterAddAsync { get; set; }
-  
+  [Parameter] public EventCallback<List<T>> ExportListToExcel { get; set; }
+  [Parameter] public EventCallback OnNextPage { get; set; }
+  [Parameter] public EventCallback OnPreviousPage { get; set; }
+  [Parameter] public EventCallback OnSelect { get; set; }
+  [Parameter] public EventCallback<string> OnSearch { get; set; }
 
   [Parameter] public int? PageSize { get; set; }
   public string CustomerSearchCardStyle = "d-none";
@@ -545,23 +498,11 @@
   public string ModalId => $"{DocumentType.Replace(" ", "")}Details";
 
   public T Object { get; set; }
-  DetailsModal<T, TKey, TService> detailsModal { get; set; } = new();
 
   private async Task OpenDetails(T item)
   {
     Object = item;
-    detailsModal.Object = item;
-    detailsModal.Reload();
-    StateHasChanged();
-    if (OnOpenDetails.HasDelegate)
-    {
-      await OnOpenDetails.InvokeAsync(item);
-    }
-    else
-    {
-      await Task.Delay(100);
-      await JsRuntime.InvokeVoidAsync("openModal", "genericDetails");
-    }
+    await OnOpenDetails.InvokeAsync(item);
   }
 
 
@@ -595,14 +536,8 @@
 
   private async Task ExportListToExcelAsync()
   {
-    if (SelectableModels != null)
-    {
-      var list = SelectableModels.Where(x => x.Selected).Select(x => x.Object).ToList();
-      await Task.Delay(100);
-      await JsRuntime.InvokeVoidAsync("exportListToExcel", list, "list.xlsx");
-    }
+    await ExportListToExcel.InvokeAsync(SelectableModels.Where(x => x.Selected).Select(x => x.Object).ToList());
   }
-
   private async Task ActivateHidden()
   {
     await Task.Delay(0);
