@@ -32,7 +32,15 @@ public interface IAttachment : IAttachment<string>
 
 public enum AttachmentType
 {
-    Image,
-    Document,
-    Other,
+    /// <summary>
+    /// "pdf" => "bi-file-earmark-pdf text-danger",
+    // "doc" or "docx" => "bi-file-earmark-word text-primary",
+    // "xls" or "xlsx" => "bi-file-earmark-excel text-success",
+    // "ppt" or "pptx" => "bi-file-earmark-ppt text-warning",
+    // "jpg" or "jpeg" or "png" or "gif" => "bi-file-earmark-image text-info",
+    // "zip" or "rar" => "bi-file-earmark-zip text-secondary",
+    // _ => "bi-file-earmark text-muted"
+    /// </summary>
+    pdf, doc, docx, xls, xlsx, ppt, pptx, jpg, jpeg, png, gif, zip, rar, other = 100, Image, Document, Other
+
 }

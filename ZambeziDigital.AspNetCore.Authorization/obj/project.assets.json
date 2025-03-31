@@ -562,32 +562,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ittai\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "/Users/ittaitumelo/.nuget/packages/": {}
   },
   "project": {
     "version": "8.6.1",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\Foundation\\ZambeziDigital.AspNetCore.Authorization\\ZambeziDigital.AspNetCore.Authorization.csproj",
+      "projectUniqueName": "/Users/ittaitumelo/RiderProjects/Foundation/ZambeziDigital.AspNetCore.Authorization/ZambeziDigital.AspNetCore.Authorization.csproj",
       "projectName": "ZambeziDigital.AspNetCore.Authorization",
-      "projectPath": "D:\\Projects\\Foundation\\ZambeziDigital.AspNetCore.Authorization\\ZambeziDigital.AspNetCore.Authorization.csproj",
-      "packagesPath": "C:\\Users\\ittai\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\Foundation\\ZambeziDigital.AspNetCore.Authorization\\obj\\",
+      "projectPath": "/Users/ittaitumelo/RiderProjects/Foundation/ZambeziDigital.AspNetCore.Authorization/ZambeziDigital.AspNetCore.Authorization.csproj",
+      "packagesPath": "/Users/ittaitumelo/.nuget/packages/",
+      "outputPath": "/Users/ittaitumelo/RiderProjects/Foundation/ZambeziDigital.AspNetCore.Authorization/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\ittai\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/ittaitumelo/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -637,7 +629,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.202/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

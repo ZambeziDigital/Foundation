@@ -553,13 +553,14 @@
     detailsModal.Object = item;
     detailsModal.Reload();
     StateHasChanged();
+    await Task.Delay(100);
+
     if (OnOpenDetails.HasDelegate)
     {
       await OnOpenDetails.InvokeAsync(item);
     }
     else
     {
-      await Task.Delay(100);
       await JsRuntime.InvokeVoidAsync("openModal", "genericDetails");
     }
   }

@@ -736,7 +736,7 @@
           "MailKit": "4.8.0",
           "Microsoft.AspNetCore.OpenApi": "8.0.10",
           "MySqlConnector": "2.3.7",
-          "ZambeziDigital.Base": "8.9.4"
+          "ZambeziDigital.Base": "8.9.5"
         },
         "compile": {
           "bin/placeholder/ZambeziDigital.AspNetCore.Abstractions.dll": {}
@@ -745,7 +745,7 @@
           "bin/placeholder/ZambeziDigital.AspNetCore.Abstractions.dll": {}
         }
       },
-      "ZambeziDigital.Base/8.9.4": {
+      "ZambeziDigital.Base/8.9.5": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
@@ -768,7 +768,7 @@
           "Microsoft.AspNetCore.Components.Authorization": "8.0.10",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.10",
           "Microsoft.Extensions.Http": "8.0.1",
-          "ZambeziDigital.Base": "8.9.4",
+          "ZambeziDigital.Base": "8.9.5",
           "ZambeziDigital.Functions": "8.7.2"
         },
         "compile": {
@@ -1931,7 +1931,7 @@
       "path": "../ZambeziDigital.AspNetCore.Abstractions/ZambeziDigital.AspNetCore.Abstractions.csproj",
       "msbuildProject": "../ZambeziDigital.AspNetCore.Abstractions/ZambeziDigital.AspNetCore.Abstractions.csproj"
     },
-    "ZambeziDigital.Base/8.9.4": {
+    "ZambeziDigital.Base/8.9.5": {
       "type": "project",
       "path": "../ZambeziDigital.Base/ZambeziDigital.Base.csproj",
       "msbuildProject": "../ZambeziDigital.Base/ZambeziDigital.Base.csproj"
@@ -1957,43 +1957,35 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ittai\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "/Users/ittaitumelo/.nuget/packages/": {}
   },
   "project": {
     "version": "8.11.4",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\Foundation\\ZambeziDigital.AspNetCore.Implementations.Generics\\ZambeziDigital.AspNetCore.Implementations.Generics.csproj",
+      "projectUniqueName": "/Users/ittaitumelo/RiderProjects/Foundation/ZambeziDigital.AspNetCore.Implementations.Generics/ZambeziDigital.AspNetCore.Implementations.Generics.csproj",
       "projectName": "ZambeziDigital.AspNetCore.Implementations.Generics",
-      "projectPath": "D:\\Projects\\Foundation\\ZambeziDigital.AspNetCore.Implementations.Generics\\ZambeziDigital.AspNetCore.Implementations.Generics.csproj",
-      "packagesPath": "C:\\Users\\ittai\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\Foundation\\ZambeziDigital.AspNetCore.Implementations.Generics\\obj\\",
+      "projectPath": "/Users/ittaitumelo/RiderProjects/Foundation/ZambeziDigital.AspNetCore.Implementations.Generics/ZambeziDigital.AspNetCore.Implementations.Generics.csproj",
+      "packagesPath": "/Users/ittaitumelo/.nuget/packages/",
+      "outputPath": "/Users/ittaitumelo/RiderProjects/Foundation/ZambeziDigital.AspNetCore.Implementations.Generics/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\ittai\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/ittaitumelo/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\Projects\\Foundation\\ZambeziDigital.AspNetCore.Abstractions\\ZambeziDigital.AspNetCore.Abstractions.csproj": {
-              "projectPath": "D:\\Projects\\Foundation\\ZambeziDigital.AspNetCore.Abstractions\\ZambeziDigital.AspNetCore.Abstractions.csproj"
+            "/Users/ittaitumelo/RiderProjects/Foundation/ZambeziDigital.AspNetCore.Abstractions/ZambeziDigital.AspNetCore.Abstractions.csproj": {
+              "projectPath": "/Users/ittaitumelo/RiderProjects/Foundation/ZambeziDigital.AspNetCore.Abstractions/ZambeziDigital.AspNetCore.Abstractions.csproj"
             },
-            "D:\\Projects\\Foundation\\ZambeziDigital.Base.Implementation\\ZambeziDigital.Base.Implementation.csproj": {
-              "projectPath": "D:\\Projects\\Foundation\\ZambeziDigital.Base.Implementation\\ZambeziDigital.Base.Implementation.csproj"
+            "/Users/ittaitumelo/RiderProjects/Foundation/ZambeziDigital.Base.Implementation/ZambeziDigital.Base.Implementation.csproj": {
+              "projectPath": "/Users/ittaitumelo/RiderProjects/Foundation/ZambeziDigital.Base.Implementation/ZambeziDigital.Base.Implementation.csproj"
             }
           }
         }
@@ -2043,7 +2035,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.202/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

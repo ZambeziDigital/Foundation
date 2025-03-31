@@ -4,7 +4,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>8.10.9</Version>
+        <Version>8.10.10</Version>
         <Title>Reusable Blazor Components</Title>
         <Description>More coming soon</Description>
     </PropertyGroup>
